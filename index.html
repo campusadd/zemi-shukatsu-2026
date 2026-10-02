@@ -7,7 +7,7 @@
 <title>ゼミ就活講座 2026秋</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Zen+Maru+Gothic:wght@700;900&family=M+PLUS+2:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=M+PLUS+2:wght@400;500;700;800&display=swap">
 <style>
 /* Layout: one narrow column like a class timetable — date slips on the left, seminar on the right; tapping opens the seminar's own page.
    Palette: Campus Add のオフィス（明るい木の床・白い壁・ロゴの青と黄色）から */
@@ -15,7 +15,7 @@
   --bg:#fbf8f3; --surface:#ffffff; --soft:#f3ece1; --ink:#3a3634; --muted:#736b63; --line:#e6ddd0;
   --accent:#0a66b8; --accent-ink:#ffffff; --mark:#f2b705; --mark-soft:#fff3c7; --mark-ink:#7a5600;
   --wait:#5f8f86; --wait-soft:#e3f0ec; --danger:#c62828;
-  --f-display:"Zen Maru Gothic","Outfit","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --f-display:"M PLUS 2","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
   --f-body:"M PLUS 2","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
   --f-num:"Outfit","M PLUS 2",system-ui,sans-serif;
   color-scheme:light;
@@ -43,7 +43,7 @@ button{font:inherit;color:inherit}
 
 .hero{display:grid;gap:14px;padding-block:20px 8px;justify-items:center;text-align:center}
 .hero p{margin-inline:auto}
-.hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,9vw,54px);letter-spacing:.04em}
+.hero h1{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,9vw,54px);letter-spacing:.06em}
 /* ロゴの黄色い星を見出しの飾りに */
 .hero h1 small::before{content:"";display:inline-block;width:.9em;height:.9em;margin-right:.45em;vertical-align:-.1em;background:var(--mark);
   clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
@@ -169,7 +169,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 .office .access dd{margin:0;min-width:0;overflow-wrap:anywhere}
 .office .map{justify-self:start;margin-top:6px;font-size:13px;font-weight:700;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:4px 14px;text-decoration:none}
 .office figcaption b{font-family:var(--f-display);font-size:17px;color:var(--ink)}
-.thanks .big{font-family:var(--f-display);font-weight:900;font-size:30px;color:var(--accent)}
+.thanks .big{font-family:var(--f-display);font-weight:800;font-size:30px;color:var(--accent)}
 .errbox{background:var(--surface);border:1.5px solid var(--danger);color:var(--danger);border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700}
 @media (max-width:480px){
   .steps li{font-size:12px;padding:8px 10px}
@@ -184,10 +184,10 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 
   <main id="v-home">
     <header class="hero">
-      <div class="eyebrow">北海学園大学 ほか ／ 2026年度 秋学期</div>
+      <div class="eyebrow">2026年度</div>
       <div class="brand"><img src="campus-add-logo.png" alt="Campus Add" width="300" height="98"></div>
       <h1><small>SEMINAR × CAREER</small>ゼミ就活講座</h1>
-      <p>企業の人事担当者があなたのゼミに来て、就活講座を行います。<br>自分のゼミをタップすると、日程と参加企業を確認できます。<br>講座を受けたら、同じページからアンケートに答えてください。</p>
+      <p>Campus Addの講師と企業人事担当者があなたのゼミにやってくる！<br>ここだけの特別な就活講座です。<br>自分のゼミをタップすると、日程と参加企業を確認できます。<br>講座を受けたら、同じページからアンケートに答えてください。</p>
       <ol class="steps">
         <li><span>STEP 1</span>自分のゼミを選ぶ</li>
         <li><span>STEP 2</span>参加企業を確認</li>
