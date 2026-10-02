@@ -7,32 +7,33 @@
 <title>ゼミ就活講座 2026秋</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=IBM+Plex+Mono:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Zen+Maru+Gothic:wght@700;900&family=M+PLUS+2:wght@400;500;700;800&display=swap">
 <style>
-/* Layout: one narrow column like a class timetable — date slips on the left, seminar on the right; tapping opens the seminar's own page. */
+/* Layout: one narrow column like a class timetable — date slips on the left, seminar on the right; tapping opens the seminar's own page.
+   Palette: Campus Add のオフィス（明るい木の床・白い壁・ロゴの青と黄色）から */
 :root{
-  --bg:#f2f4f1; --surface:#ffffff; --soft:#e5ece7; --ink:#15231d; --muted:#5a6a62; --line:#d4dcd6;
-  --accent:#1e5a45; --accent-ink:#ffffff; --mark:#c98612; --mark-soft:#f7ebd1; --mark-ink:#6b4500;
-  --wait:#6d6f8a; --wait-soft:#e6e6ef; --danger:#b3261e;
-  --f-display:"Dela Gothic One","Zen Kaku Gothic New","Hiragino Sans",sans-serif;
-  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
-  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --bg:#fbf8f3; --surface:#ffffff; --soft:#f3ece1; --ink:#3a3634; --muted:#736b63; --line:#e6ddd0;
+  --accent:#0a66b8; --accent-ink:#ffffff; --mark:#f2b705; --mark-soft:#fff3c7; --mark-ink:#7a5600;
+  --wait:#5f8f86; --wait-soft:#e3f0ec; --danger:#c62828;
+  --f-display:"Zen Maru Gothic","Outfit","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --f-body:"M PLUS 2","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+  --f-num:"Outfit","M PLUS 2",system-ui,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f1713; --surface:#16211c; --soft:#1d2a24; --ink:#e6eee9; --muted:#9bada3; --line:#2a3a33;
-  --accent:#73c6a2; --accent-ink:#0b1a13; --mark:#f0b94a; --mark-soft:#3a2e15; --mark-ink:#f6d58f;
-  --wait:#a9abc9; --wait-soft:#25263a; --danger:#ff8a80; color-scheme:dark;
+  --bg:#12171d; --surface:#1a222b; --soft:#232c36; --ink:#eef1f4; --muted:#a7b0ba; --line:#2e3944;
+  --accent:#5aa9ec; --accent-ink:#0c1a28; --mark:#f5c430; --mark-soft:#3a3016; --mark-ink:#f8dc8a;
+  --wait:#8fc4b9; --wait-soft:#1e3330; --danger:#ff8a80; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
-  --bg:#0f1713; --surface:#16211c; --soft:#1d2a24; --ink:#e6eee9; --muted:#9bada3; --line:#2a3a33;
-  --accent:#73c6a2; --accent-ink:#0b1a13; --mark:#f0b94a; --mark-soft:#3a2e15; --mark-ink:#f6d58f;
-  --wait:#a9abc9; --wait-soft:#25263a; --danger:#ff8a80; color-scheme:dark;
+  --bg:#12171d; --surface:#1a222b; --soft:#232c36; --ink:#eef1f4; --muted:#a7b0ba; --line:#2e3944;
+  --accent:#5aa9ec; --accent-ink:#0c1a28; --mark:#f5c430; --mark-soft:#3a3016; --mark-ink:#f8dc8a;
+  --wait:#8fc4b9; --wait-soft:#1e3330; --danger:#ff8a80; color-scheme:dark;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;font-weight:500;line-height:1.75;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
 .wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 64px}
 h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
 a{color:var(--accent)}
@@ -41,7 +42,13 @@ button{font:inherit;color:inherit}
 .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
 
 .hero{display:grid;gap:14px;padding-block:20px 8px}
-.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,9vw,56px);letter-spacing:.02em}
+.hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,9vw,54px);letter-spacing:.04em}
+/* ロゴの黄色い星を見出しの飾りに */
+.hero h1 small::before{content:"";display:inline-block;width:.9em;height:.9em;margin-right:.45em;vertical-align:-.1em;background:var(--mark);
+  clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
+/* ロゴ画像の余白を切り取って表示（白い台の上に置くので暗い画面でも見える） */
+.brand{width:200px;height:34px;overflow:hidden;background:#fff;border-radius:8px;box-sizing:content-box;padding:8px 12px;justify-self:start}
+.brand img{display:block;width:247px;height:81px;max-width:none;margin:-23px 0 0 -23px}
 .hero h1 small{display:block;font-family:var(--f-num);font-size:14px;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
 .hero p{margin:0;max-width:34em;color:var(--muted)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 0;padding:0;list-style:none}
@@ -49,7 +56,10 @@ button{font:inherit;color:inherit}
 .steps li span{font-family:var(--f-num);font-size:11px;color:var(--accent);letter-spacing:.08em}
 
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;margin-top:18px;border-bottom:1px solid var(--line)}
-.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips{display:grid;gap:8px}
+.chiprow{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chiprow::-webkit-scrollbar{display:none}
+.chiprow .uni{flex:none;font-size:12px;font-weight:700;color:var(--muted);min-width:7.5em}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
@@ -64,7 +74,7 @@ button{font:inherit;color:inherit}
 .slip:active{transform:scale(.99)}
 .slip .date{display:grid;place-content:center;text-align:center;background:var(--soft);border-right:1px dashed var(--line);padding:10px 4px;font-family:var(--f-num)}
 .date .m{font-size:11px;color:var(--muted);letter-spacing:.06em}
-.date .d{font-size:26px;font-weight:600;line-height:1.1}
+.date .d{font-variant-numeric:tabular-nums;font-size:26px;font-weight:600;line-height:1.1}
 .date .w{font-size:11px;color:var(--muted);font-family:var(--f-body);font-weight:700}
 .date .tbd{font-size:12px;font-family:var(--f-body);font-weight:700;color:var(--wait);line-height:1.35}
 .slip .body{padding:12px 14px;min-width:0;display:grid;gap:4px}
@@ -81,8 +91,12 @@ button{font:inherit;color:inherit}
 .empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:18px 16px;color:var(--muted);font-size:14px}
 
 .co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
-.co{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px;min-width:0}
-.co b{font-size:14px}
+.co{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;align-content:start;gap:6px;min-width:0}
+.cohead{display:grid;gap:6px;justify-items:start}
+.co .coname{font-size:15px;font-weight:700;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px}
+.co a.coname:hover{text-decoration:underline;text-underline-offset:3px}
+.co .ext{font-size:10px;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 5px;line-height:1.6}
+.co .ind{font-size:11px;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
 .co .links{display:flex;flex-wrap:wrap;gap:4px}
 .co .links button{border:none;background:var(--soft);color:var(--accent);border-radius:6px;font-size:11px;padding:2px 7px;cursor:pointer;font-weight:700}
 
@@ -126,6 +140,9 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 .choices span{display:block;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:var(--bg)}
 .choices input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
 .choices input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
+.choices.stack label{width:100%}
+.choices .tag{font-style:normal;font-size:10px;font-weight:700;margin-left:8px;padding:1px 6px;border-radius:4px;background:var(--mark-soft);color:var(--mark-ink);vertical-align:1px}
+.choices input:checked+span .tag{background:var(--accent-ink);color:var(--accent)}
 .grid-q{display:grid;gap:12px}
 .grow{display:grid;gap:6px}
 .grow b{font-size:13px}
@@ -143,7 +160,15 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 .cta[disabled]{opacity:.6;cursor:wait}
 .fallback{font-size:12px;color:var(--muted);text-align:center;margin:18px 0 0}
 .thanks{text-align:center;padding:40px 0;display:grid;gap:12px;justify-items:center}
-.thanks .big{font-family:var(--f-display);font-size:30px;color:var(--accent)}
+.office{margin:8px 0 0;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-align:left}
+.office img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.office figcaption{padding:14px 16px;display:grid;gap:4px;font-size:14px;color:var(--muted)}
+.office .access{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:8px 0 0;font-size:13px}
+.office .access dt{font-weight:700;color:var(--ink)}
+.office .access dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.office .map{justify-self:start;margin-top:6px;font-size:13px;font-weight:700;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:4px 14px;text-decoration:none}
+.office figcaption b{font-family:var(--f-display);font-size:17px;color:var(--ink)}
+.thanks .big{font-family:var(--f-display);font-weight:900;font-size:30px;color:var(--accent)}
 .errbox{background:var(--surface);border:1.5px solid var(--danger);color:var(--danger);border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700}
 @media (max-width:480px){
   .steps li{font-size:12px;padding:8px 10px}
@@ -159,6 +184,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
   <main id="v-home">
     <header class="hero">
       <div class="eyebrow">北海学園大学 ほか ／ 2026年度 秋学期</div>
+      <div class="brand"><img src="campus-add-logo.png" alt="Campus Add" width="300" height="98"></div>
       <h1><small>SEMINAR × CAREER</small>ゼミ就活講座</h1>
       <p>企業の人事担当者があなたのゼミに来て、就活講座を行います。自分のゼミをタップすると、日程と参加企業を確認できます。講座を受けたら、同じページからアンケートに答えてください。</p>
       <ol class="steps">
@@ -180,7 +206,6 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 
     <section>
       <div class="sec-h"><h2>参加企業</h2><span class="count" id="coCount"></span></div>
-      <p class="note" style="margin:0 0 10px;text-align:left">企業名の下のゼミ名をタップすると、そのゼミのページに移動します。</p>
       <div class="co-grid" id="coGrid"></div>
     </section>
 
@@ -216,6 +241,12 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
     <div class="thanks" id="qThanks" hidden>
       <div class="big">ありがとうございました</div>
       <p style="margin:0;color:var(--muted)">回答を受け付けました。案内を希望した企業から、今後ご連絡が届きます。</p>
+      <figure class="office">
+        <img src="campus-add-office.jpg" alt="Campus Add の室内。本棚と木の床、テーブル席やソファが並ぶ明るいスペース" width="1706" height="960" loading="lazy">
+        <figcaption><span>Campus Add では、就活講座や個別相談を行っています。<br>見学もできるので、気軽にお越しください！</span><b>次は Campus Add で会いましょう！</b>
+          <dl class="access"><dt>住所</dt><dd>札幌市中央区南1条東3丁目10-13 アイパスビル3F</dd><dt>アクセス</dt><dd>地下鉄東西線 バスセンター前駅 徒歩2分</dd></dl>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%9C%AD%E5%B9%8C%E5%B8%82%E4%B8%AD%E5%A4%AE%E5%8C%BA%E5%8D%971%E6%9D%A1%E6%9D%B13%E4%B8%81%E7%9B%AE10-13" target="_blank" rel="noopener">地図を開く</a></figcaption>
+      </figure>
       <button class="cta ghost" type="button" id="qHome" style="max-width:320px">ゼミ一覧へ戻る</button>
     </div>
   </main>
@@ -240,7 +271,7 @@ const FALLBACK = [
   {id:"sato",uni:"旭川市立大学",fac:"",name:"佐藤ゼミ",date:null,when:"11〜12月",time:"調整中",venue:"オンライン",online:true,cos:[],plan:"2社"},
 ];
 const CONFIG = Object.assign({sheetCsvUrl:"", formUrl:""}, window.ZEMI_CONFIG || {});
-const CACHE_KEY = "zemi.sheet.v1";
+const CACHE_KEY = "zemi.sheet.v2";
 const WD = ["日","月","火","水","木","金","土"];
 
 // ---- 管理表の読み込み ----
@@ -261,6 +292,19 @@ function normDate(v){
   const m=String(v||"").trim().match(/^(\d{4})\s*[\/\-.年]\s*(\d{1,2})\s*[\/\-.月]\s*(\d{1,2})/);
   return m ? `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}` : null;
 }
+function splitCos(v){
+  const out=[]; let cur="", depth=0;
+  for(const ch of String(v||"")){
+    if(ch==="（"||ch==="(") depth++;
+    if((ch==="）"||ch===")") && depth>0) depth--;
+    if(depth===0 && /[、,，\n]/.test(ch)){ if(cur.trim()) out.push(cur.trim()); cur=""; continue; }
+    cur+=ch;
+  }
+  if(cur.trim()) out.push(cur.trim());
+  return out;
+}
+// 「カナモト（建設機械レンタル）」→ 名前と業界に分ける
+function coParts(n){ const m=String(n).match(/^(.*?)\s*[（(](.+)[）)]\s*$/); return m ? {name:m[1], ind:m[2]} : {name:n, ind:""}; }
 function rowsToSems(rows){
   const head=rows[0].map(h=>h.trim()), col=n=>head.indexOf(n);
   const need=["ゼミ名"]; for(const n of need) if(col(n)<0) throw new Error("管理表に「"+n+"」の列がありません");
@@ -276,7 +320,7 @@ function rowsToSems(rows){
       date, when:get(r,"日程メモ") || (date?"":dateRaw) || "日程調整中",
       time:get(r,"時間") || "調整中", venue: venue || (form==="オンライン"?"オンライン":"調整中"),
       online: form==="オンライン",
-      cos:get(r,"参加企業").split(/[、,，\n／\/]+/).map(s=>s.trim()).filter(Boolean),
+      cos:splitCos(get(r,"参加企業")),
       plan:get(r,"予定社数"), survey:get(r,"アンケートURL")
     });
   });
@@ -304,26 +348,39 @@ function dateText(s){ const p=parts(s); return p ? `${p.y}年${p.m}月${p.d}日�
 function status(s){
   if(s.date && s.date < todayStr) return {cls:"done", text:"開催済み・アンケート受付中"};
   if(!s.date) return {cls:"wait", text:"日程調整中"};
-  if(s.cos.length) return {cls:"ok", text:`参加企業 ${s.cos.length}社 決定`};
+  if(s.cos.length) return {cls:"ok", text:`参加企業 ${s.cos.length}社`};
   return {cls:"wait", text:"参加企業 調整中"+(s.plan?`（${s.plan}予定）`:"")};
 }
 
 let facFilter = "すべて";
-try{ facFilter = localStorage.getItem("zemi.fac") || "すべて"; }catch(e){}
+try{ facFilter = localStorage.getItem("zemi.fac2") || "すべて"; }catch(e){}
+const facKey = s => (s.uni||"")+"|"+(s.fac||"");
 
 function renderChips(){
-  const facs=["すべて", ...new Set(SEMS.map(group))];
-  if(!facs.includes(facFilter)) facFilter="すべて";
-  $("#chips").replaceChildren(...facs.map((f,i)=>{
-    const b=el("button",{type:"button",className:"chip",textContent:f,id:"chip-"+i});
-    b.setAttribute("aria-pressed", String(f===facFilter));
-    b.onclick=()=>{ facFilter=f; try{localStorage.setItem("zemi.fac",f)}catch(e){} renderChips(); renderList(); };
+  const unis=[...new Set(SEMS.map(s=>s.uni||"その他"))];
+  const keys=new Set(SEMS.map(facKey));
+  if(facFilter!=="すべて" && !keys.has(facFilter) && !unis.includes(facFilter)) facFilter="すべて";
+  const chip=(text,key)=>{
+    const b=el("button",{type:"button",className:"chip",textContent:text});
+    b.setAttribute("aria-pressed", String(key===facFilter));
+    b.onclick=()=>{ facFilter=key; try{localStorage.setItem("zemi.fac2",key)}catch(e){} renderChips(); renderList(); };
     return b;
-  }));
+  };
+  const rows=[el("div",{className:"chiprow"},[chip("すべて","すべて")])];
+  for(const u of unis){
+    const facs=[...new Set(SEMS.filter(s=>(s.uni||"その他")===u).map(s=>s.fac).filter(Boolean))];
+    const row=el("div",{className:"chiprow"},[el("span",{className:"uni",textContent:u})]);
+    if(facs.length>1) row.append(chip("全学部",u));
+    if(facs.length) facs.forEach(f=>row.append(chip(f,u+"|"+f)));
+    else row.append(chip("すべてのゼミ",u));
+    rows.push(row);
+  }
+  $("#chips").replaceChildren(...rows);
 }
+const inFilter = s => facFilter==="すべて" || facFilter===facKey(s) || facFilter===(s.uni||"その他");
 function renderList(){
   const list=$("#semList"); list.replaceChildren();
-  const rows=SEMS.filter(s=> facFilter==="すべて" || group(s)===facFilter);
+  const rows=SEMS.filter(inFilter);
   $("#semCount").textContent = rows.length+"ゼミ";
   if(!rows.length) list.append(el("div",{className:"empty",textContent:"開催予定のゼミはまだありません。"}));
   for(const s of rows){
@@ -343,21 +400,26 @@ function renderList(){
     list.append(card);
   }
 }
+// 企業一覧シート（企業名 → 採用ページURL）。名前の先頭が一致すれば同じ会社とみなす
+let CO_URLS=[];
+function coUrl(n){ const x=CO_URLS.find(c=>n===c.name) || CO_URLS.find(c=>n.startsWith(c.name)); return x ? x.url : ""; }
 function renderCompanies(){
   const map=new Map();
   for(const s of SEMS) for(const c of s.cos){ if(!map.has(c)) map.set(c,[]); map.get(c).push(s); }
   const names=[...map.keys()].sort((a,b)=>a.localeCompare(b,"ja"));
   $("#coCount").textContent = names.length+"社";
   $("#coGrid").replaceChildren(...names.map(n=>{
-    const links=el("div",{className:"links"}, map.get(n).map(s=>{ const b=el("button",{type:"button",textContent:fullName(s)}); b.onclick=()=>go("s-"+s.id); return b; }));
-    return el("div",{className:"co"},[el("b",{textContent:n}),links]);
+    const url=coUrl(n), cp=coParts(n);
+    const name = url ? el("a",{className:"coname",href:url,target:"_blank",rel:"noopener"},[cp.name, el("span",{className:"ext",textContent:"採用サイト"})]) : el("b",{className:"coname",textContent:cp.name});
+    const head=el("div",{className:"cohead"},[name, cp.ind?el("span",{className:"ind",textContent:cp.ind}):null]);
+    return el("div",{className:"co"},[head]);
   }));
 }
 function renderSem(s){
   $("#dFac").textContent=label(s);
   $("#dName").textContent=s.name+" 就活講座";
   const st=status(s);
-  $("#dPills").replaceChildren(el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null);
+  $("#dPills").replaceChildren(...[el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null].filter(Boolean));
   $("#dFacts").replaceChildren(
     el("dt",{textContent:"日程"}), el("dd",{textContent:dateText(s)}),
     el("dt",{textContent:"時間"}), el("dd",{className:"num",textContent:s.time}),
@@ -367,10 +429,9 @@ function renderSem(s){
   $("#dCoCount").textContent = s.cos.length ? s.cos.length+"社" : "";
   if(s.cos.length){
     for(const c of s.cos){
-      const others=SEMS.filter(o=>o!==s && o.cos.includes(c)).length;
       box.append(el("div",{className:"cobig"},[
         el("div",{className:"mono",textContent:c.replace(/^株式会社/,"").trim().charAt(0)}),
-        el("div",{},[el("b",{textContent:c}), el("small",{textContent: others? `ほかに${others}つのゼミでも講座を担当します` : "このゼミの講座を担当します"})])
+        el("div",{},[el("b",{textContent:c})])
       ]));
     }
   }else{
@@ -442,6 +503,13 @@ function qField(it){
   }else if(it.type==="MULTIPLE_CHOICE" || it.type==="CHECKBOX"){
     const long=it.choices.some(c=>c.length>10);
     const list=it.choices.map((c,i)=>opt(it.type==="CHECKBOX"?"checkbox":"radio",k,c,i));
+    // 「Campus Add の見学」は一番上に、目立つ形で出す
+    const fi=it.choices.findIndex(c=>/見学/.test(c));
+    if(fi>=0){
+      const f=list.splice(fi,1)[0]; f.classList.add("feature");
+      f.querySelector("span").append(el("em",{className:"tag",textContent:"おすすめ"}));
+      list.unshift(f);
+    }
     // 企業の選択には「全社希望する」を先頭に置く（押すと全社にチェック。送るのは各社の名前）
     if(it.type==="CHECKBOX" && it.sem && it.choices.length>1){
       const aid=`${k}-all`;
@@ -579,6 +647,15 @@ function notice(t){ const n=$("#notice"); n.textContent=t||""; n.hidden=!t; }
   fetch(schemaUrl()+"&_="+Date.now(),{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
     SCHEMA=parseSchema(parseCsv(t)); SCHEMA_STATE="ready";
   }).catch(()=>{ SCHEMA=null; SCHEMA_STATE="failed"; }).finally(()=>{ QS=null; route(false); });
+  const coSheet=CONFIG.sheetCsvUrl.replace(/([?&]sheet=)[^&]*/, "$1"+encodeURIComponent("企業一覧"));
+  fetch(coSheet+"&_="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.text():"").then(t=>{
+    const rows=parseCsv(t||""); if(!rows.length) return;
+    const h=rows[0].map(x=>x.trim()), ni=h.indexOf("企業名"), ui=h.indexOf("採用ページURL");
+    if(ni<0 || ui<0) return; // 企業一覧シートがないときは何もしない
+    CO_URLS=rows.slice(1).map(r=>({name:String(r[ni]||"").trim(), url:String(r[ui]||"").trim()}))
+      .filter(c=>c.name && /^https?:\/\//.test(c.url)).sort((a,b)=>b.name.length-a.name.length);
+    renderCompanies();
+  }).catch(()=>{});
   const url=CONFIG.sheetCsvUrl+(CONFIG.sheetCsvUrl.includes("?")?"&":"?")+"_="+Date.now();
   fetch(url,{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
     const rows=parseCsv(t); if(rows.length<1) throw new Error("empty");
