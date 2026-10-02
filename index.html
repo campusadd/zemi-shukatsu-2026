@@ -187,7 +187,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
       <div class="eyebrow">北海学園大学 ほか ／ 2026年度 秋学期</div>
       <div class="brand"><img src="campus-add-logo.png" alt="Campus Add" width="300" height="98"></div>
       <h1><small>SEMINAR × CAREER</small>ゼミ就活講座</h1>
-      <p>企業の人事担当者があなたのゼミに来て、就活講座を行います。自分のゼミをタップすると、日程と参加企業を確認できます。講座を受けたら、同じページからアンケートに答えてください。</p>
+      <p>企業の人事担当者があなたのゼミに来て、就活講座を行います。<br>自分のゼミをタップすると、日程と参加企業を確認できます。<br>講座を受けたら、同じページからアンケートに答えてください。</p>
       <ol class="steps">
         <li><span>STEP 1</span>自分のゼミを選ぶ</li>
         <li><span>STEP 2</span>参加企業を確認</li>
@@ -346,8 +346,8 @@ const label = s => [s.uni, s.fac].filter(Boolean).join(" ");
 const fullName = s => group(s)+" "+s.name;
 function parts(s){ if(!s.date) return null; const [y,m,d]=s.date.split("-").map(Number); return {y,m,d,w:WD[new Date(y,m-1,d).getDay()]}; }
 function dateText(s){ const p=parts(s); return p ? `${p.y}年${p.m}月${p.d}日（${p.w}）` : s.when; }
+const surveyPill = s => surveyOpen(s) ? el("span",{className:"pill done",textContent:"アンケート受付中"}) : null;
 function status(s){
-  if(surveyOpen(s) && (s.surveyMode||"").trim()!=="停止") return {cls:"done", text:"アンケート受付中"};
   if(s.date && s.date < todayStr) return {cls:"done", text:"開催済み"};
   if(!s.date) return {cls:"wait", text:"日程調整中"};
   if(s.cos.length) return {cls:"ok", text:`参加企業 ${s.cos.length}社`};
@@ -394,7 +394,7 @@ function renderList(){
       el("div",{className:"fac",textContent:label(s)}),
       el("div",{className:"name",textContent:s.name}),
       el("div",{className:"meta",textContent:s.time+" ／ "+s.venue}),
-      el("div",{className:"pills"},[el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null])
+      el("div",{className:"pills"},[surveyPill(s), el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null])
     ]);
     const card=el("button",{type:"button",className:"slip"},[date,body,el("div",{className:"go",textContent:"›"})]);
     card.setAttribute("aria-label", fullName(s)+" "+dateText(s)+" "+st.text);
@@ -421,7 +421,7 @@ function renderSem(s){
   $("#dFac").textContent=label(s);
   $("#dName").textContent=s.name+" 就活講座";
   const st=status(s);
-  $("#dPills").replaceChildren(...[el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null].filter(Boolean));
+  $("#dPills").replaceChildren(...[surveyPill(s), el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null].filter(Boolean));
   $("#dFacts").replaceChildren(
     el("dt",{textContent:"日程"}), el("dd",{textContent:dateText(s)}),
     el("dt",{textContent:"時間"}), el("dd",{className:"num",textContent:s.time}),
