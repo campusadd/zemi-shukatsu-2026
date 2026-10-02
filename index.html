@@ -41,13 +41,14 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--mark);outline-offset:2px;border-radius:6px}
 .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
 
-.hero{display:grid;gap:14px;padding-block:20px 8px}
+.hero{display:grid;gap:14px;padding-block:20px 8px;justify-items:center;text-align:center}
+.hero p{margin-inline:auto}
 .hero h1{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,9vw,54px);letter-spacing:.04em}
 /* ロゴの黄色い星を見出しの飾りに */
 .hero h1 small::before{content:"";display:inline-block;width:.9em;height:.9em;margin-right:.45em;vertical-align:-.1em;background:var(--mark);
   clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%)}
 /* ロゴ画像の余白を切り取って表示（白い台の上に置くので暗い画面でも見える） */
-.brand{width:200px;height:34px;overflow:hidden;background:#fff;border-radius:8px;box-sizing:content-box;padding:8px 12px;justify-self:start}
+.brand{width:200px;height:34px;overflow:hidden;background:#fff;border-radius:8px;box-sizing:content-box;padding:8px 12px;justify-self:center}
 .brand img{display:block;width:247px;height:81px;max-width:none;margin:-23px 0 0 -23px}
 .hero h1 small{display:block;font-family:var(--f-num);font-size:14px;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
 .hero p{margin:0;max-width:34em;color:var(--muted)}
@@ -321,7 +322,7 @@ function rowsToSems(rows){
       time:get(r,"時間") || "調整中", venue: venue || (form==="オンライン"?"オンライン":"調整中"),
       online: form==="オンライン",
       cos:splitCos(get(r,"参加企業")),
-      plan:get(r,"予定社数"), survey:get(r,"アンケートURL")
+      plan:get(r,"予定社数"), survey:get(r,"アンケートURL"), surveyMode:get(r,"アンケート受付")
     });
   });
   return out;
@@ -346,7 +347,8 @@ const fullName = s => group(s)+" "+s.name;
 function parts(s){ if(!s.date) return null; const [y,m,d]=s.date.split("-").map(Number); return {y,m,d,w:WD[new Date(y,m-1,d).getDay()]}; }
 function dateText(s){ const p=parts(s); return p ? `${p.y}年${p.m}月${p.d}日（${p.w}）` : s.when; }
 function status(s){
-  if(s.date && s.date < todayStr) return {cls:"done", text:"開催済み・アンケート受付中"};
+  if(surveyOpen(s) && (s.surveyMode||"").trim()!=="停止") return {cls:"done", text:"アンケート受付中"};
+  if(s.date && s.date < todayStr) return {cls:"done", text:"開催済み"};
   if(!s.date) return {cls:"wait", text:"日程調整中"};
   if(s.cos.length) return {cls:"ok", text:`参加企業 ${s.cos.length}社`};
   return {cls:"wait", text:"参加企業 調整中"+(s.plan?`（${s.plan}予定）`:"")};
@@ -438,11 +440,27 @@ function renderSem(s){
     box.append(el("div",{className:"empty",textContent:"参加企業は調整中です"+(s.plan?`（${s.plan}予定）`:"")+"。決まりしだい、このページに掲載します。"}));
   }
   const url = s.survey || CONFIG.formUrl, a=$("#dSurvey");
-  if(SCHEMA && surveyPlan(s)){ a.href="#q-"+s.id; a.removeAttribute("target"); a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; }
-  else if(url){ a.href=url; a.target="_blank"; a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; }
-  else { a.removeAttribute("href"); a.classList.add("off"); a.setAttribute("aria-disabled","true"); a.textContent="アンケートは準備中です"; }
-  $("#dNote").textContent = !url ? "講座当日までに回答フォームを用意します。"
-    : (s.date && s.date > todayStr) ? "アンケートは講座を受けたあとに回答してください。" : "講座を受けたら、その日のうちに回答をお願いします。";
+  const off = t => { a.removeAttribute("href"); a.classList.add("off"); a.setAttribute("aria-disabled","true"); a.textContent=t; };
+  const on = () => { a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; };
+  if(!url){ off("アンケートは準備中です"); $("#dNote").textContent="講座当日までに回答フォームを用意します。"; return; }
+  if(!surveyOpen(s)){ off("アンケートは講座当日に回答できます"); $("#dNote").textContent=surveyOpenText(s); return; }
+  if(SCHEMA && surveyPlan(s)){ a.href="#q-"+s.id; a.removeAttribute("target"); on(); }
+  else { a.href=url; a.target="_blank"; on(); }
+  $("#dNote").textContent = "講座を受けたら、その日のうちに回答をお願いします。";
+}
+// アンケートの受付：開催日の朝9:00（日本時間）から。管理表の「アンケート受付」列が「受付中」なら今すぐ、「停止」なら閉じる
+function surveyOpenAt(s){
+  const m=(s.surveyMode||"").trim();
+  if(m==="受付中" || (CONFIG.surveyOpenNow||[]).includes(s.id)) return 0;
+  if(m==="停止" || !s.date) return Infinity;
+  const [y,mo,d]=s.date.split("-").map(Number);
+  return Date.UTC(y,mo-1,d,0,0,0); // 9:00 JST = 0:00 UTC
+}
+const surveyOpen = s => Date.now() >= surveyOpenAt(s);
+function surveyOpenText(s){
+  if((s.surveyMode||"").trim()==="停止") return "アンケートの受付は終了しました。";
+  if(!s.date) return "開催日が決まったら、当日の朝9:00から回答できます。";
+  const p=parts(s); return `${p.m}月${p.d}日（${p.w}）の朝9:00から回答できます。`;
 }
 function renderAll(){ renderChips(); renderList(); renderCompanies(); route(false); }
 
@@ -554,7 +572,7 @@ function checkItem(it){
 }
 function applyVisibility(){ if(QS) QS.steps.forEach(st=>st.items.forEach(it=>{ $("#f-"+it.k).hidden=!visible(it); })); }
 function openSurvey(s){
-  const plan=surveyPlan(s);
+  const plan=surveyOpen(s) ? surveyPlan(s) : null;
   $("#qTitle").textContent=fullName(s)+" 就活講座";
   const fb=$("#qFallback"), url=s.survey||CONFIG.formUrl;
   fb.replaceChildren(...(url?["うまく送信できない場合は、", el("a",{href:url,target:"_blank",rel:"noopener",textContent:"Googleフォーム"}), "から回答してください。"]:[]));
@@ -562,7 +580,8 @@ function openSurvey(s){
   const f=$("#qForm"); f.replaceChildren();
   if(!plan){
     QS=null; $("#qProgress").replaceChildren(); $("#qStep").textContent="";
-    f.append(el("div",{className:"empty",textContent: SCHEMA_STATE==="loading" ? "アンケートを読み込んでいます…" : "このページではアンケートを表示できませんでした。下のリンクのGoogleフォームから回答してください。"}));
+    if(!surveyOpen(s)) fb.replaceChildren();
+    f.append(el("div",{className:"empty",textContent: !surveyOpen(s) ? "アンケートはまだ始まっていません。"+surveyOpenText(s) : SCHEMA_STATE==="loading" ? "アンケートを読み込んでいます…" : "このページではアンケートを表示できませんでした。下のリンクのGoogleフォームから回答してください。"}));
     return;
   }
   QS={s, ...plan, step:0, sending:false};
