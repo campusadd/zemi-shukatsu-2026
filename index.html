@@ -9,27 +9,30 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=IBM+Plex+Mono:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
-/* Layout: one narrow column like a class timetable — date slips on the left, seminar on the right; tapping opens the seminar's own page and its survey. */
+/* Layout: one narrow column like a class timetable — date slips on the left, seminar on the right; tapping opens the seminar's own page. */
 :root{
   --bg:#f2f4f1; --surface:#ffffff; --soft:#e5ece7; --ink:#15231d; --muted:#5a6a62; --line:#d4dcd6;
   --accent:#1e5a45; --accent-ink:#ffffff; --mark:#c98612; --mark-soft:#f7ebd1; --mark-ink:#6b4500;
-  --wait:#6d6f8a; --wait-soft:#e6e6ef; --danger:#b3261e;
+  --wait:#6d6f8a; --wait-soft:#e6e6ef;
   --f-display:"Dela Gothic One","Zen Kaku Gothic New","Hiragino Sans",sans-serif;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
   --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0f1713; --surface:#16211c; --soft:#1d2a24; --ink:#e6eee9; --muted:#9bada3; --line:#2a3a33;
   --accent:#73c6a2; --accent-ink:#0b1a13; --mark:#f0b94a; --mark-soft:#3a2e15; --mark-ink:#f6d58f;
-  --wait:#a9abc9; --wait-soft:#25263a; --danger:#ff8a80; color-scheme:dark;
+  --wait:#a9abc9; --wait-soft:#25263a; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#0f1713; --surface:#16211c; --soft:#1d2a24; --ink:#e6eee9; --muted:#9bada3; --line:#2a3a33;
   --accent:#73c6a2; --accent-ink:#0b1a13; --mark:#f0b94a; --mark-soft:#3a2e15; --mark-ink:#f6d58f;
-  --wait:#a9abc9; --wait-soft:#25263a; --danger:#ff8a80; color-scheme:dark;
+  --wait:#a9abc9; --wait-soft:#25263a; color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
+[hidden]{display:none!important}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
 .wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:20px 64px}
 h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
 a{color:var(--accent)}
@@ -37,7 +40,6 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--mark);outline-offset:2px;border-radius:6px}
 .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
 
-/* hero */
 .hero{display:grid;gap:14px;padding-block:20px 8px}
 .hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,9vw,56px);letter-spacing:.02em}
 .hero h1 small{display:block;font-family:var(--f-num);font-size:14px;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
@@ -46,14 +48,13 @@ button{font:inherit;color:inherit}
 .steps li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;display:grid;gap:2px}
 .steps li span{font-family:var(--f-num);font-size:11px;color:var(--accent);letter-spacing:.08em}
 
-/* filters */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;margin-top:18px;border-bottom:1px solid var(--line)}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 
-/* seminar slips */
+.notice{margin-top:14px;background:var(--mark-soft);color:var(--mark-ink);border-radius:10px;padding:10px 14px;font-size:13px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:26px 0 10px}
 .sec-h h2{font-size:18px}
 .sec-h .count{font-family:var(--f-num);font-size:12px;color:var(--muted)}
@@ -61,7 +62,7 @@ button{font:inherit;color:inherit}
 .slip{display:grid;grid-template-columns:76px 1fr auto;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;text-align:left;padding:0;width:100%;transition:border-color .15s,transform .15s}
 .slip:hover{border-color:var(--accent)}
 .slip:active{transform:scale(.99)}
-.slip .date{display:grid;place-content:center;text-align:center;gap:0;background:var(--soft);border-right:1px dashed var(--line);padding:10px 4px;font-family:var(--f-num)}
+.slip .date{display:grid;place-content:center;text-align:center;background:var(--soft);border-right:1px dashed var(--line);padding:10px 4px;font-family:var(--f-num)}
 .date .m{font-size:11px;color:var(--muted);letter-spacing:.06em}
 .date .d{font-size:26px;font-weight:600;line-height:1.1}
 .date .w{font-size:11px;color:var(--muted);font-family:var(--f-body);font-weight:700}
@@ -69,7 +70,7 @@ button{font:inherit;color:inherit}
 .slip .body{padding:12px 14px;min-width:0;display:grid;gap:4px}
 .slip .fac{font-size:12px;color:var(--muted);font-weight:500}
 .slip .name{font-size:17px;font-weight:700}
-.slip .meta{font-size:12px;color:var(--muted);font-family:var(--f-num)}
+.slip .meta{font-size:12px;color:var(--muted);font-family:var(--f-num);overflow-wrap:anywhere}
 .slip .go{display:grid;place-items:center;padding-inline:12px;color:var(--muted);font-size:18px}
 .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 .pill{font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;letter-spacing:.03em}
@@ -77,71 +78,30 @@ button{font:inherit;color:inherit}
 .pill.wait{background:var(--wait-soft);color:var(--wait)}
 .pill.done{background:var(--soft);color:var(--accent)}
 .pill.online{border:1px solid var(--line);color:var(--muted)}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:18px 16px;color:var(--muted);font-size:14px}
 
-/* companies index */
 .co-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
 .co{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px;min-width:0}
 .co b{font-size:14px}
 .co .links{display:flex;flex-wrap:wrap;gap:4px}
 .co .links button{border:none;background:var(--soft);color:var(--accent);border-radius:6px;font-size:11px;padding:2px 7px;cursor:pointer;font-weight:700}
 
-/* detail */
 .back{display:inline-flex;align-items:center;gap:6px;border:none;background:none;color:var(--accent);font-weight:700;cursor:pointer;padding:4px 0;margin-bottom:8px}
 .dhead{display:grid;gap:6px;padding-block:8px 18px;border-bottom:1px solid var(--line)}
 .dhead h1{font-size:clamp(24px,6vw,32px)}
 .facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:16px 0 0;font-size:14px}
 .facts dt{color:var(--muted);font-size:12px;font-weight:700;padding-top:2px}
-.facts dd{margin:0;font-family:var(--f-body)}
+.facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
 .facts .num{font-family:var(--f-num)}
 .companies{display:grid;gap:8px;margin-top:10px}
 .cobig{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .mono{flex:none;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px}
 .cobig b{font-size:16px;display:block}
 .cobig small{color:var(--muted);font-size:12px}
-.empty{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:18px 16px;color:var(--muted);font-size:14px}
-.cta{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;border:none;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;padding:15px 18px;cursor:pointer;margin-top:22px}
+.cta{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;border:none;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:16px;padding:15px 18px;cursor:pointer;margin-top:22px;text-decoration:none}
 .cta:hover{filter:brightness(1.06)}
-.cta.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.cta.off{background:var(--soft);color:var(--muted);cursor:default;filter:none}
 .note{font-size:12px;color:var(--muted);margin:8px 0 0;text-align:center}
-
-/* survey */
-form{display:grid;gap:14px;margin-top:16px}
-fieldset,.field{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;margin:0;min-width:0;display:grid;gap:10px}
-legend,.field>label{font-weight:700;font-size:14px;padding:0}
-legend{float:left;width:100%;margin-bottom:4px}
-legend+*{clear:both}
-.req{font-size:10px;font-weight:700;background:var(--mark-soft);color:var(--mark-ink);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px}
-.opt{font-size:10px;font-weight:700;background:var(--soft);color:var(--muted);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px}
-.hint{font-size:12px;color:var(--muted);margin:-4px 0 0}
-.choices{display:flex;flex-wrap:wrap;gap:8px}
-.choices label{position:relative;cursor:pointer}
-.choices input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.choices span{display:block;border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:14px;background:var(--bg)}
-.choices input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
-.choices input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
-.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.scale label{position:relative;cursor:pointer}
-.scale input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
-.scale span{display:grid;place-items:center;height:46px;border:1px solid var(--line);border-radius:10px;font-family:var(--f-num);font-size:18px;font-weight:600;background:var(--bg)}
-.scale input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.scale input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
-.scale-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-4px}
-select,textarea,input[type="text"]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-textarea{min-height:110px;resize:vertical}
-.err{color:var(--danger);font-size:13px;font-weight:700;margin:0}
-.msg{border-radius:12px;padding:14px 16px;font-size:14px}
-.msg.info{background:var(--mark-soft);color:var(--mark-ink)}
-.msg.bad{background:var(--surface);border:1.5px solid var(--danger);color:var(--danger)}
-.thanks{text-align:center;padding:40px 16px;display:grid;gap:10px;justify-items:center}
-.thanks .big{font-family:var(--f-display);font-size:32px;color:var(--accent)}
-
-/* owner panel */
-.owner{margin-top:36px;border:1.5px dashed var(--accent);border-radius:14px;padding:16px;display:grid;gap:12px;background:var(--surface)}
-.owner table{width:100%;border-collapse:collapse;font-size:13px}
-.owner th,.owner td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
-.owner td.n{font-family:var(--f-num);text-align:right;font-variant-numeric:tabular-nums}
-.owner th.n{text-align:right}
-.tbl{overflow-x:auto}
 footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 @media (max-width:480px){
   .steps li{font-size:12px;padding:8px 10px}
@@ -154,7 +114,6 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 <body>
 <div class="wrap">
 
-  <!-- HOME -->
   <main id="v-home">
     <header class="hero">
       <div class="eyebrow">北海学園大学 ほか ／ 2026年度 秋学期</div>
@@ -170,6 +129,7 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
     <div class="bar">
       <div class="chips" id="chips" role="toolbar" aria-label="学部で絞り込み"></div>
     </div>
+    <div class="notice" id="notice" hidden></div>
 
     <section>
       <div class="sec-h"><h2>開催ゼミ一覧</h2><span class="count" id="semCount"></span></div>
@@ -178,29 +138,15 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
 
     <section>
       <div class="sec-h"><h2>参加企業</h2><span class="count" id="coCount"></span></div>
-      <p class="hint" style="margin:0 0 10px">企業名の下のゼミ名をタップすると、そのゼミのページに移動します。</p>
+      <p class="note" style="margin:0 0 10px;text-align:left">企業名の下のゼミ名をタップすると、そのゼミのページに移動します。</p>
       <div class="co-grid" id="coGrid"></div>
-    </section>
-
-    <section class="owner" id="ownerPanel" hidden>
-      <div>
-        <div class="eyebrow">主催者だけに表示されています</div>
-        <h2 style="font-size:17px;margin-top:4px">アンケート回答状況</h2>
-      </div>
-      <div class="tbl"><table>
-        <thead><tr><th>ゼミ</th><th class="n">回答数</th><th class="n">満足度(平均)</th><th class="n">理解度(平均)</th></tr></thead>
-        <tbody id="ownerRows"><tr><td colspan="4">まだ回答はありません。学生が回答すると、ここに件数が表示されます。</td></tr></tbody>
-      </table></div>
-      <button class="cta ghost" id="csvBtn" type="button" style="margin-top:0" hidden>回答をCSVで保存</button>
-      <p class="err" id="ownerErr" hidden></p>
     </section>
 
     <footer>日程・参加企業は変更になる場合があります。最新情報はこのページで確認してください。</footer>
   </main>
 
-  <!-- SEMINAR DETAIL -->
   <main id="v-sem" hidden>
-    <button class="back" type="button" data-go="">← ゼミ一覧へ</button>
+    <button class="back" type="button" id="dBack">← ゼミ一覧へ</button>
     <header class="dhead">
       <div class="eyebrow" id="dFac"></div>
       <h1 id="dName"></h1>
@@ -209,154 +155,129 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
     </header>
     <div class="sec-h"><h2>参加企業</h2><span class="count" id="dCoCount"></span></div>
     <div class="companies" id="dCompanies"></div>
-    <button class="cta" type="button" id="dSurvey">受講後アンケートに回答する</button>
+    <a class="cta" id="dSurvey" target="_blank" rel="noopener">受講後アンケートに回答する</a>
     <p class="note" id="dNote"></p>
-  </main>
-
-  <!-- SURVEY -->
-  <main id="v-survey" hidden>
-    <button class="back" type="button" id="sBack">← ゼミのページへ</button>
-    <header class="dhead">
-      <div class="eyebrow">受講後アンケート ／ 所要時間 約3分</div>
-      <h1 id="sTitle">受講後アンケート</h1>
-      <p class="hint" style="margin:0">回答内容は講座の改善と、今後のご案内の参考にします。</p>
-    </header>
-
-    <div id="sForm">
-      <div class="msg info" id="sAlready" hidden style="margin-top:16px">このゼミのアンケートには回答済みです。もう一度送信すると、前回の回答が上書きされます。</div>
-      <form id="survey" novalidate>
-        <div class="field">
-          <label for="q-sem">受講したゼミ<span class="req">必須</span></label>
-          <select id="q-sem" name="sem"></select>
-        </div>
-
-        <fieldset>
-          <legend>学年<span class="req">必須</span></legend>
-          <div class="choices" id="q-grade"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>講座の満足度<span class="req">必須</span></legend>
-          <div class="scale" id="q-sat"></div>
-          <div class="scale-ends"><span>1 不満</span><span>5 とても満足</span></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>就活の進め方について理解が深まりましたか<span class="req">必須</span></legend>
-          <div class="scale" id="q-und"></div>
-          <div class="scale-ends"><span>1 深まらなかった</span><span>5 とても深まった</span></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>話を聞いて興味を持った企業<span class="opt">任意</span></legend>
-          <p class="hint">いくつでも選べます。</p>
-          <div class="choices" id="q-co"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>今後参加してみたいもの<span class="opt">任意</span></legend>
-          <p class="hint">いくつでも選べます。</p>
-          <div class="choices" id="q-next"></div>
-        </fieldset>
-
-        <fieldset>
-          <legend>就活でいま一番不安なこと<span class="opt">任意</span></legend>
-          <div class="choices" id="q-worry"></div>
-        </fieldset>
-
-        <div class="field">
-          <label for="q-comment">感想・企業への質問<span class="opt">任意</span></label>
-          <textarea id="q-comment" name="comment" maxlength="2000" placeholder="例）業界研究の進め方がわかった。〇〇社の若手社員の働き方をもっと聞きたい。"></textarea>
-        </div>
-
-        <div class="field">
-          <label for="q-name">氏名<span class="opt">任意</span></label>
-          <input type="text" id="q-name" name="name" maxlength="60" autocomplete="name" placeholder="例）北海 太郎">
-        </div>
-
-        <p class="err" id="sErr" hidden></p>
-        <button class="cta" type="submit" id="sSubmit" style="margin-top:4px">回答を送信する</button>
-      </form>
-    </div>
-
-    <div class="thanks" id="sThanks" hidden>
-      <div class="big">ありがとうございました</div>
-      <p style="margin:0;color:var(--muted)">回答を受け付けました。就活でわからないことがあれば、講座の担当者にいつでも相談してください。</p>
-      <button class="cta ghost" type="button" data-go="" style="max-width:320px">ゼミ一覧へ戻る</button>
-    </div>
   </main>
 </div>
 
+<script src="config.js"></script>
 <script>
-// ---- Data: 【確定】2026年秋 開催講座・イベント集約表 から「ゼミ就活講座」のみ ----
-const VENUE = "北海学園大学 豊平キャンパス";
-const SEMS = [
-  {id:"chiba",      fac:"法学部",   uni:"北海学園大学", name:"千葉ゼミ",   date:"2026-10-05", time:"16:00〜17:30", venue:VENUE, cos:["エイジス北海道","トヨタモビリティパーツ","ほくやく・竹山HD（TSUMUGI HD）","デジック"]},
-  {id:"oishi",      fac:"人文学部", uni:"北海学園大学", name:"大石ゼミ",   date:"2026-10-06", time:"16:00〜17:30", venue:VENUE+" AV4教室", cos:["カナモト","BREXA Technology","野口観光グループ"]},
-  {id:"masuchi",    fac:"経営学部", uni:"北海学園大学", name:"増地ゼミ",   date:"2026-10-08", time:"16:00〜17:30", venue:VENUE, cos:["AGHトヨタ札幌","カナモト","フルテック","ndp group"]},
-  {id:"terashima1", fac:"法学部",   uni:"北海学園大学", name:"寺島ゼミ①", date:"2026-10-14", time:"16:00〜17:30", venue:VENUE, cos:["アレフ","ファイバーゲート","ほくやく・竹山HD（TSUMUGI HD）"]},
-  {id:"tanaka",     fac:"人文学部", uni:"北海学園大学", name:"田中綾ゼミ", date:"2026-11-10", time:"14:20〜15:50", venue:VENUE, cos:[], plan:"2〜3社"},
-  {id:"fukuchi",    fac:"経営学部", uni:"北海学園大学", name:"福地ゼミ",   date:"2026-11-17", time:"14:20〜15:50", venue:VENUE, cos:[], plan:"2社"},
-  {id:"ito",        fac:"経営学部", uni:"北海学園大学", name:"伊藤ゼミ",   date:"2026-11-24", time:"16:00〜17:30", venue:VENUE, cos:["SCSK北海道","トランスコスモス","ndp group","UDトラックス北海道"]},
-  {id:"nakamura",   fac:"経営学部", uni:"北海学園大学", name:"中村ゼミ",   date:"2026-12-22", time:"17:50〜19:20", venue:VENUE, cos:[], plan:"4社"},
-  {id:"terashima2", fac:"法学部",   uni:"北海学園大学", name:"寺島ゼミ②", date:"2026-12-23", time:"16:00〜17:30", venue:VENUE, cos:["AGHトヨタ札幌","かんぽ生命保険","フルテック"]},
-  {id:"mizunoya",   fac:"経済学部", uni:"北海学園大学", name:"水野谷ゼミ", date:"2027-01-20", time:"14:20〜15:50", venue:VENUE, cos:["かんぽ生命保険","トヨタモビリティパーツ","ほくやく・竹山HD（TSUMUGI HD）"]},
-  {id:"kusama",     fac:"法学部",   uni:"北海学園大学", name:"草間ゼミ",   date:null, when:"12月予定",  time:"16:00〜17:30", venue:VENUE, cos:[], plan:"2〜3社"},
-  {id:"wakatsuki",  fac:"法学部",   uni:"北海学園大学", name:"若月ゼミ",   date:null, when:"日程調整中", time:"16:00〜17:30", venue:VENUE, cos:[], plan:"2〜3社"},
-  {id:"sato",       fac:"",         uni:"旭川市立大学", name:"佐藤ゼミ",   date:null, when:"11〜12月",  time:"調整中", venue:"オンライン", online:true, cos:[], plan:"2社"},
+// 管理表（Googleスプレッドシート）を読み込めなかったときだけ使う控えのデータ
+const FALLBACK = [
+  {id:"chiba",uni:"北海学園大学",fac:"法学部",name:"千葉ゼミ",date:"2026-10-05",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:["エイジス北海道","トヨタモビリティパーツ","ほくやく・竹山HD（TSUMUGI HD）","デジック"]},
+  {id:"oishi",uni:"北海学園大学",fac:"人文学部",name:"大石ゼミ",date:"2026-10-06",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス AV4教室",cos:["カナモト","BREXA Technology","野口観光グループ"]},
+  {id:"masuchi",uni:"北海学園大学",fac:"経営学部",name:"増地ゼミ",date:"2026-10-08",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:["AGHトヨタ札幌","カナモト","フルテック","ndp group"]},
+  {id:"terashima1",uni:"北海学園大学",fac:"法学部",name:"寺島ゼミ①",date:"2026-10-14",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:["アレフ","ファイバーゲート","ほくやく・竹山HD（TSUMUGI HD）"]},
+  {id:"tanaka",uni:"北海学園大学",fac:"人文学部",name:"田中綾ゼミ",date:"2026-11-10",time:"14:20〜15:50",venue:"北海学園大学 豊平キャンパス",cos:[],plan:"2〜3社"},
+  {id:"fukuchi",uni:"北海学園大学",fac:"経営学部",name:"福地ゼミ",date:"2026-11-17",time:"14:20〜15:50",venue:"北海学園大学 豊平キャンパス",cos:[],plan:"2社"},
+  {id:"ito",uni:"北海学園大学",fac:"経営学部",name:"伊藤ゼミ",date:"2026-11-24",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:["SCSK北海道","トランスコスモス","ndp group","UDトラックス北海道"]},
+  {id:"nakamura",uni:"北海学園大学",fac:"経営学部",name:"中村ゼミ",date:"2026-12-22",time:"17:50〜19:20",venue:"北海学園大学 豊平キャンパス",cos:[],plan:"4社"},
+  {id:"terashima2",uni:"北海学園大学",fac:"法学部",name:"寺島ゼミ②",date:"2026-12-23",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:["AGHトヨタ札幌","かんぽ生命保険","フルテック"]},
+  {id:"mizunoya",uni:"北海学園大学",fac:"経済学部",name:"水野谷ゼミ",date:"2027-01-20",time:"14:20〜15:50",venue:"北海学園大学 豊平キャンパス",cos:["かんぽ生命保険","トヨタモビリティパーツ","ほくやく・竹山HD（TSUMUGI HD）"]},
+  {id:"kusama",uni:"北海学園大学",fac:"法学部",name:"草間ゼミ",date:null,when:"12月予定",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:[],plan:"2〜3社"},
+  {id:"wakatsuki",uni:"北海学園大学",fac:"法学部",name:"若月ゼミ",date:null,when:"日程調整中",time:"16:00〜17:30",venue:"北海学園大学 豊平キャンパス",cos:[],plan:"2〜3社"},
+  {id:"sato",uni:"旭川市立大学",fac:"",name:"佐藤ゼミ",date:null,when:"11〜12月",time:"調整中",venue:"オンライン",online:true,cos:[],plan:"2社"},
 ];
-const GRADES = ["2年生","3年生","その他"];
-const NEXT = ["インターンシップ・仕事体験","企業説明会","社員との座談会","就活の個別相談","まだ考えていない"];
-const WORRY = ["自己分析","業界・企業研究","エントリーシート","面接","就活のスケジュール","その他"];
+const CONFIG = Object.assign({sheetCsvUrl:"", formUrl:""}, window.ZEMI_CONFIG || {});
+const CACHE_KEY = "zemi.sheet.v1";
 const WD = ["日","月","火","水","木","金","土"];
 
+// ---- 管理表の読み込み ----
+function parseCsv(text){
+  const rows=[]; let row=[], cell="", q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
+    else if(c==='"') q=true;
+    else if(c===','){ row.push(cell); cell=""; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cell); rows.push(row); row=[]; cell=""; }
+    else cell+=c;
+  }
+  if(cell!==""||row.length){ row.push(cell); rows.push(row); }
+  return rows.filter(r=>r.some(v=>v.trim()!==""));
+}
+function normDate(v){
+  const m=String(v||"").trim().match(/^(\d{4})\s*[\/\-.年]\s*(\d{1,2})\s*[\/\-.月]\s*(\d{1,2})/);
+  return m ? `${m[1]}-${m[2].padStart(2,"0")}-${m[3].padStart(2,"0")}` : null;
+}
+function rowsToSems(rows){
+  const head=rows[0].map(h=>h.trim()), col=n=>head.indexOf(n);
+  const need=["ゼミ名"]; for(const n of need) if(col(n)<0) throw new Error("管理表に「"+n+"」の列がありません");
+  const get=(r,n)=>{ const i=col(n); return i<0 ? "" : String(r[i]??"").trim(); };
+  const out=[];
+  rows.slice(1).forEach((r,i)=>{
+    const name=get(r,"ゼミ名"); if(!name || get(r,"非表示")) return;
+    const dateRaw=get(r,"日付"), date=normDate(dateRaw);
+    const venue=get(r,"会場"), form=get(r,"形式");
+    out.push({
+      id:(get(r,"ID")||"r"+(i+2)).replace(/[^A-Za-z0-9_-]/g,"") || "r"+(i+2),
+      uni:get(r,"大学"), fac:get(r,"学部"), name,
+      date, when:get(r,"日程メモ") || (date?"":dateRaw) || "日程調整中",
+      time:get(r,"時間") || "調整中", venue: venue || (form==="オンライン"?"オンライン":"調整中"),
+      online: form==="オンライン",
+      cos:get(r,"参加企業").split(/[、,，\n／\/]+/).map(s=>s.trim()).filter(Boolean),
+      plan:get(r,"予定社数"), survey:get(r,"アンケートURL")
+    });
+  });
+  return out;
+}
+function sortSems(list){
+  return list.map((s,i)=>[s,i]).sort((a,b)=>{
+    const x=a[0].date, y=b[0].date;
+    if(x&&y) return x<y?-1:x>y?1:a[1]-b[1];
+    if(x) return -1; if(y) return 1; return a[1]-b[1];
+  }).map(p=>p[0]);
+}
+
+// ---- 表示 ----
+let SEMS = [];
 const $ = s => document.querySelector(s);
 const el = (tag, props={}, kids=[]) => { const n=document.createElement(tag); Object.assign(n, props); for(const k of [].concat(kids)) if(k!=null) n.append(k); return n; };
 const byId = id => SEMS.find(s=>s.id===id);
 const todayStr = (()=>{ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); })();
-const label = s => (s.fac ? s.uni+" "+s.fac : s.uni);
-const fullName = s => (s.fac||s.uni)+" "+s.name;
-function parts(s){ if(!s.date) return null; const [y,m,d]=s.date.split("-").map(Number); const w=WD[new Date(y,m-1,d).getDay()]; return {y,m,d,w}; }
+const group = s => s.fac || s.uni || "その他";
+const label = s => [s.uni, s.fac].filter(Boolean).join(" ");
+const fullName = s => group(s)+" "+s.name;
+function parts(s){ if(!s.date) return null; const [y,m,d]=s.date.split("-").map(Number); return {y,m,d,w:WD[new Date(y,m-1,d).getDay()]}; }
 function dateText(s){ const p=parts(s); return p ? `${p.y}年${p.m}月${p.d}日（${p.w}）` : s.when; }
 function status(s){
   if(s.date && s.date < todayStr) return {cls:"done", text:"開催済み・アンケート受付中"};
   if(!s.date) return {cls:"wait", text:"日程調整中"};
   if(s.cos.length) return {cls:"ok", text:`参加企業 ${s.cos.length}社 決定`};
-  return {cls:"wait", text:`参加企業 調整中（${s.plan}予定）`};
+  return {cls:"wait", text:"参加企業 調整中"+(s.plan?`（${s.plan}予定）`:"")};
 }
 
-// ---- Home ----
-const FACS = ["すべて","法学部","人文学部","経営学部","経済学部","旭川市立大学"];
 let facFilter = "すべて";
-try{ const f=localStorage.getItem("zemi.fac"); if(f && FACS.includes(f)) facFilter=f; }catch(e){}
+try{ facFilter = localStorage.getItem("zemi.fac") || "すべて"; }catch(e){}
 
 function renderChips(){
-  const box=$("#chips"); box.replaceChildren();
-  for(const f of FACS){
-    const b=el("button",{type:"button",className:"chip",textContent:f,id:"chip-"+FACS.indexOf(f)});
+  const facs=["すべて", ...new Set(SEMS.map(group))];
+  if(!facs.includes(facFilter)) facFilter="すべて";
+  $("#chips").replaceChildren(...facs.map((f,i)=>{
+    const b=el("button",{type:"button",className:"chip",textContent:f,id:"chip-"+i});
     b.setAttribute("aria-pressed", String(f===facFilter));
     b.onclick=()=>{ facFilter=f; try{localStorage.setItem("zemi.fac",f)}catch(e){} renderChips(); renderList(); };
-    box.append(b);
-  }
+    return b;
+  }));
 }
 function renderList(){
   const list=$("#semList"); list.replaceChildren();
-  const rows=SEMS.filter(s=> facFilter==="すべて" || s.fac===facFilter || s.uni===facFilter);
+  const rows=SEMS.filter(s=> facFilter==="すべて" || group(s)===facFilter);
   $("#semCount").textContent = rows.length+"ゼミ";
+  if(!rows.length) list.append(el("div",{className:"empty",textContent:"開催予定のゼミはまだありません。"}));
   for(const s of rows){
     const p=parts(s), st=status(s);
     const date = p
       ? el("div",{className:"date"},[el("div",{className:"m",textContent:p.m+"月"}),el("div",{className:"d",textContent:p.d}),el("div",{className:"w",textContent:p.w+"曜"})])
       : el("div",{className:"date"},[el("div",{className:"tbd",textContent:s.when})]);
-    const pills=el("div",{className:"pills"},[el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null]);
     const body=el("div",{className:"body"},[
       el("div",{className:"fac",textContent:label(s)}),
       el("div",{className:"name",textContent:s.name}),
       el("div",{className:"meta",textContent:s.time+" ／ "+s.venue}),
-      pills
+      el("div",{className:"pills"},[el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null])
     ]);
-    const card=el("button",{type:"button",className:"slip",id:"slip-"+s.id},[date,body,el("div",{className:"go",textContent:"›",ariaHidden:"true"})]);
-    card.setAttribute("aria-label", fullName(s)+" "+(dateText(s)||"")+" "+st.text);
+    const card=el("button",{type:"button",className:"slip"},[date,body,el("div",{className:"go",textContent:"›"})]);
+    card.setAttribute("aria-label", fullName(s)+" "+dateText(s)+" "+st.text);
     card.onclick=()=>go("s-"+s.id);
     list.append(card);
   }
@@ -366,23 +287,20 @@ function renderCompanies(){
   for(const s of SEMS) for(const c of s.cos){ if(!map.has(c)) map.set(c,[]); map.get(c).push(s); }
   const names=[...map.keys()].sort((a,b)=>a.localeCompare(b,"ja"));
   $("#coCount").textContent = names.length+"社";
-  const grid=$("#coGrid"); grid.replaceChildren();
-  for(const n of names){
-    const links=el("div",{className:"links"}, map.get(n).map(s=>{ const b=el("button",{type:"button",textContent:(s.fac||s.uni)+" "+s.name}); b.onclick=()=>go("s-"+s.id); return b; }));
-    grid.append(el("div",{className:"co"},[el("b",{textContent:n}),links]));
-  }
+  $("#coGrid").replaceChildren(...names.map(n=>{
+    const links=el("div",{className:"links"}, map.get(n).map(s=>{ const b=el("button",{type:"button",textContent:fullName(s)}); b.onclick=()=>go("s-"+s.id); return b; }));
+    return el("div",{className:"co"},[el("b",{textContent:n}),links]);
+  }));
 }
-
-// ---- Detail ----
 function renderSem(s){
   $("#dFac").textContent=label(s);
   $("#dName").textContent=s.name+" 就活講座";
   const st=status(s);
   $("#dPills").replaceChildren(el("span",{className:"pill "+st.cls,textContent:st.text}), s.online?el("span",{className:"pill online",textContent:"オンライン"}):null);
-  const f=$("#dFacts"); f.replaceChildren(
+  $("#dFacts").replaceChildren(
     el("dt",{textContent:"日程"}), el("dd",{textContent:dateText(s)}),
     el("dt",{textContent:"時間"}), el("dd",{className:"num",textContent:s.time}),
-    el("dt",{textContent:"会場"}), el("dd",{textContent:s.venue+(s.online?"":"（対面）")})
+    el("dt",{textContent:"会場"}), el("dd",{textContent:s.venue})
   );
   const box=$("#dCompanies"); box.replaceChildren();
   $("#dCoCount").textContent = s.cos.length ? s.cos.length+"社" : "";
@@ -395,147 +313,43 @@ function renderSem(s){
       ]));
     }
   }else{
-    box.append(el("div",{className:"empty",textContent:`参加企業は調整中です（${s.plan}予定）。決まりしだい、このページに掲載します。`}));
+    box.append(el("div",{className:"empty",textContent:"参加企業は調整中です"+(s.plan?`（${s.plan}予定）`:"")+"。決まりしだい、このページに掲載します。"}));
   }
-  $("#dSurvey").onclick=()=>go("q-"+s.id);
-  const before = s.date && s.date > todayStr;
-  $("#dNote").textContent = before ? "アンケートは講座を受けたあとに回答してください。" : "講座を受けたら、その日のうちに回答をお願いします。";
+  const url = s.survey || CONFIG.formUrl, a=$("#dSurvey");
+  if(url){ a.href=url; a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; }
+  else { a.removeAttribute("href"); a.classList.add("off"); a.setAttribute("aria-disabled","true"); a.textContent="アンケートは準備中です"; }
+  $("#dNote").textContent = !url ? "講座当日までに回答フォームを用意します。"
+    : (s.date && s.date > todayStr) ? "アンケートは講座を受けたあとに回答してください。" : "講座を受けたら、その日のうちに回答をお願いします。";
 }
+function renderAll(){ renderChips(); renderList(); renderCompanies(); route(false); }
 
-// ---- Survey ----
-function fillChoices(box, name, values, type){
-  box.replaceChildren(...values.map((v,i)=>{
-    const id=`q-${name}-${i}`;
-    const input=el("input",{type,name,value:v,id});
-    return el("label",{htmlFor:id},[input, el("span",{textContent:v})]);
-  }));
-}
-function fillScale(box,name){
-  box.replaceChildren(...[1,2,3,4,5].map(n=>{
-    const id=`q-${name}-${n}`;
-    return el("label",{htmlFor:id},[el("input",{type:"radio",name,value:String(n),id}), el("span",{textContent:n})]);
-  }));
-}
-function setupSurveyStatic(){
-  const sel=$("#q-sem");
-  sel.replaceChildren(el("option",{value:"",textContent:"選んでください"}), ...SEMS.map(s=>el("option",{value:s.id,textContent:fullName(s)+(s.date?`（${parts(s).m}/${parts(s).d}）`:"")})));
-  fillChoices($("#q-grade"),"grade",GRADES,"radio");
-  fillScale($("#q-sat"),"sat");
-  fillScale($("#q-und"),"und");
-  fillChoices($("#q-next"),"next",NEXT,"checkbox");
-  fillChoices($("#q-worry"),"worry",WORRY,"radio");
-  sel.onchange=()=>{ const s=byId(sel.value); renderCoChoices(s); $("#sTitle").textContent = s ? fullName(s)+" 就活講座" : "受講後アンケート"; checkAlready(sel.value); };
-}
-function renderCoChoices(s){
-  const box=$("#q-co");
-  if(s && s.cos.length) fillChoices(box,"co",s.cos,"checkbox");
-  else box.replaceChildren(el("p",{className:"hint",style:"margin:0",textContent:"ゼミを選ぶと、そのゼミの参加企業が表示されます。"}));
-}
-let currentSurvey=null;
-function openSurvey(s){
-  currentSurvey=s;
-  $("#sForm").hidden=false; $("#sThanks").hidden=true; $("#sErr").hidden=true;
-  $("#q-sem").value=s.id;
-  $("#sTitle").textContent=fullName(s)+" 就活講座";
-  renderCoChoices(s);
-  $("#sBack").onclick=()=>go("s-"+s.id);
-  checkAlready(s.id);
-}
-
-// ---- Storage (artifact db) ----
-let db=null, uid=null, myDoc=null;
-async function initStore(){
-  try{
-    const [d,u]=await Promise.all([window.claude?.use?.("db"), window.claude?.use?.("user")]);
-    db=d||null;
-    if(u){ uid=await u.id(); if(await u.isOwner()) initOwner(); }
-    if(db && uid){
-      const snap=await db.doc("responses/"+uid).get();
-      myDoc = snap.exists ? snap.data() : null;
-      if(currentSurvey) checkAlready($("#q-sem").value);
-    }
-  }catch(e){ /* page still works without storage */ }
-}
-function checkAlready(id){ $("#sAlready").hidden = !(myDoc && myDoc.answers && myDoc.answers[id]); }
-
-$("#survey").addEventListener("submit", async e=>{
-  e.preventDefault();
-  const fd=new FormData(e.target), err=$("#sErr");
-  const semId=fd.get("sem"), grade=fd.get("grade"), sat=fd.get("sat"), und=fd.get("und");
-  const missing=[]; if(!semId) missing.push("受講したゼミ"); if(!grade) missing.push("学年"); if(!sat) missing.push("満足度"); if(!und) missing.push("理解度");
-  if(missing.length){ err.textContent="次の項目を選んでください："+missing.join("・"); err.hidden=false; return; }
-  if(!db || !uid){ err.textContent="この画面からは回答を送信できません。サインインした状態で開き直すか、講座の担当者に回答方法を確認してください。"; err.hidden=false; return; }
-  const answer={sem:semId, grade, satisfaction:Number(sat), understanding:Number(und),
-    companies:fd.getAll("co"), next:fd.getAll("next"), worry:fd.get("worry")||"",
-    comment:String(fd.get("comment")||"").trim(), name:String(fd.get("name")||"").trim(), submittedAt:new Date().toISOString()};
-  const btn=$("#sSubmit"); btn.disabled=true; btn.textContent="送信しています…"; err.hidden=true;
-  try{
-    const ref=db.doc("responses/"+uid);
-    const snap=await ref.get();
-    const cur=snap.exists ? (snap.data().answers||{}) : {};
-    const answers={...cur, [semId]:answer};
-    await ref.set({answers, updatedAt:answer.submittedAt});
-    myDoc={answers};
-    e.target.reset(); $("#sForm").hidden=true; $("#sThanks").hidden=false; window.scrollTo(0,0);
-  }catch(x){
-    err.textContent = x && x.code==="invalid_argument"
-      ? "この画面からは回答を保存できない設定になっています。講座の担当者に回答方法を確認してください。"
-      : "送信できませんでした。通信状態を確認して、もう一度「回答を送信する」を押してください。";
-    err.hidden=false;
-  }finally{ btn.disabled=false; btn.textContent="回答を送信する"; }
-});
-
-// ---- Owner panel ----
-let allRows=[];
-function initOwner(){
-  $("#ownerPanel").hidden=false;
-  db && db.collection("responses").onSnapshot(snap=>{
-    allRows=[];
-    for(const d of snap.docs){ const a=(d.data()||{}).answers||{}; for(const k in a) allRows.push(a[k]); }
-    renderOwner();
-  }, e=>{ const o=$("#ownerErr"); o.textContent="回答状況を読み込めませんでした（"+e.code+"）。ページを開き直してください。"; o.hidden=false; });
-}
-function renderOwner(){
-  const tb=$("#ownerRows"); tb.replaceChildren();
-  if(!allRows.length){ tb.append(el("tr",{},[el("td",{colSpan:4,textContent:"まだ回答はありません。学生が回答すると、ここに件数が表示されます。"})])); $("#csvBtn").hidden=true; return; }
-  const avg=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1):"—";
-  for(const s of SEMS){
-    const r=allRows.filter(x=>x.sem===s.id); if(!r.length) continue;
-    tb.append(el("tr",{},[el("td",{textContent:fullName(s)}),el("td",{className:"n",textContent:r.length}),el("td",{className:"n",textContent:avg(r.map(x=>x.satisfaction))}),el("td",{className:"n",textContent:avg(r.map(x=>x.understanding))})]));
-  }
-  tb.append(el("tr",{},[el("td",{innerHTML:"<b>合計</b>"}),el("td",{className:"n",textContent:allRows.length}),el("td",{className:"n",textContent:avg(allRows.map(x=>x.satisfaction))}),el("td",{className:"n",textContent:avg(allRows.map(x=>x.understanding))})]));
-  $("#csvBtn").hidden=false;
-}
-$("#csvBtn").onclick=async ()=>{
-  const o=$("#ownerErr"); o.hidden=true;
-  const dl=await window.claude?.use?.("downloads");
-  if(!dl){ o.textContent="この画面ではファイルを保存できません。"; o.hidden=false; return; }
-  const q=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
-  const head=["ゼミ","開催日","学年","満足度","理解度","興味を持った企業","今後参加したいもの","不安なこと","感想・質問","氏名","回答日時"];
-  const lines=[head.map(q).join(",")];
-  for(const r of allRows.slice().sort((a,b)=>String(a.submittedAt).localeCompare(String(b.submittedAt)))){
-    const s=byId(r.sem)||{};
-    lines.push([s.id?fullName(s):r.sem, s.date||s.when||"", r.grade, r.satisfaction, r.understanding, (r.companies||[]).join("、"), (r.next||[]).join("、"), r.worry, r.comment, r.name, r.submittedAt].map(q).join(","));
-  }
-  try{ await dl.save({filename:`ゼミ就活講座_アンケート_${todayStr}.csv`, data:"﻿"+lines.join("\r\n")}); }
-  catch(x){ if(x && x.code!=="cancelled" && x.code!=="declined"){ o.textContent="保存できませんでした（"+(x.code||"error")+"）。"; o.hidden=false; } }
-};
-
-// ---- Router (#s-<id> / #q-<id>) ----
+// ---- 画面の切り替え（#s-ゼミID） ----
 function go(h){ if(location.hash.slice(1)===h) route(); else location.hash=h; }
-function route(){
-  const h=location.hash.slice(1);
-  const m=h.match(/^([sq])-([a-z0-9]+)$/); const s=m&&byId(m[2]);
-  $("#v-home").hidden = !!s; $("#v-sem").hidden = !(s && m[1]==="s"); $("#v-survey").hidden = !(s && m[1]==="q");
-  if(s && m[1]==="s") renderSem(s);
-  if(s && m[1]==="q") openSurvey(s);
-  window.scrollTo(0,0);
+function route(e){
+  const m=location.hash.slice(1).match(/^s-([A-Za-z0-9_-]+)$/), s=m&&byId(m[1]);
+  $("#v-home").hidden=!!s; $("#v-sem").hidden=!s;
+  if(s) renderSem(s);
+  if(e!==false) window.scrollTo(0,0);
 }
-document.addEventListener("click",e=>{ const b=e.target.closest("[data-go]"); if(b){ e.preventDefault(); go(b.dataset.go); if(!b.dataset.go){ history.replaceState(null,"",location.pathname+location.search); route(); } } });
+$("#dBack").onclick=()=>{ history.pushState(null,"",location.pathname+location.search); route(); };
 window.addEventListener("hashchange",route);
+window.addEventListener("popstate",route);
 
-renderChips(); renderList(); renderCompanies(); setupSurveyStatic(); route(); initStore();
+// ---- 起動：前回読み込んだ管理表 → 最新の管理表 ----
+function notice(t){ const n=$("#notice"); n.textContent=t||""; n.hidden=!t; }
+(function start(){
+  let cached=null; try{ cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); }catch(e){}
+  SEMS = sortSems(cached && Array.isArray(cached.sems) ? cached.sems : FALLBACK);
+  renderAll();
+  if(!CONFIG.sheetCsvUrl) return;
+  const url=CONFIG.sheetCsvUrl+(CONFIG.sheetCsvUrl.includes("?")?"&":"?")+"_="+Date.now();
+  fetch(url,{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
+    const rows=parseCsv(t); if(rows.length<1) throw new Error("empty");
+    SEMS=sortSems(rowsToSems(rows));
+    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({sems:SEMS, at:Date.now()})); }catch(e){}
+    notice(""); renderAll();
+  }).catch(()=>{ notice("最新の情報を読み込めませんでした。表示内容が古い可能性があります。しばらくしてからページを開き直してください。"); });
+})();
 </script>
-
 </body>
 </html>
