@@ -13,7 +13,7 @@
 :root{
   --bg:#f2f4f1; --surface:#ffffff; --soft:#e5ece7; --ink:#15231d; --muted:#5a6a62; --line:#d4dcd6;
   --accent:#1e5a45; --accent-ink:#ffffff; --mark:#c98612; --mark-soft:#f7ebd1; --mark-ink:#6b4500;
-  --wait:#6d6f8a; --wait-soft:#e6e6ef;
+  --wait:#6d6f8a; --wait-soft:#e6e6ef; --danger:#b3261e;
   --f-display:"Dela Gothic One","Zen Kaku Gothic New","Hiragino Sans",sans-serif;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
   --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
@@ -22,12 +22,12 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0f1713; --surface:#16211c; --soft:#1d2a24; --ink:#e6eee9; --muted:#9bada3; --line:#2a3a33;
   --accent:#73c6a2; --accent-ink:#0b1a13; --mark:#f0b94a; --mark-soft:#3a2e15; --mark-ink:#f6d58f;
-  --wait:#a9abc9; --wait-soft:#25263a; color-scheme:dark;
+  --wait:#a9abc9; --wait-soft:#25263a; --danger:#ff8a80; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
   --bg:#0f1713; --surface:#16211c; --soft:#1d2a24; --ink:#e6eee9; --muted:#9bada3; --line:#2a3a33;
   --accent:#73c6a2; --accent-ink:#0b1a13; --mark:#f0b94a; --mark-soft:#3a2e15; --mark-ink:#f6d58f;
-  --wait:#a9abc9; --wait-soft:#25263a; color-scheme:dark;
+  --wait:#a9abc9; --wait-soft:#25263a; --danger:#ff8a80; color-scheme:dark;
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -103,6 +103,48 @@ button{font:inherit;color:inherit}
 .cta.off{background:var(--soft);color:var(--muted);cursor:default;filter:none}
 .note{font-size:12px;color:var(--muted);margin:8px 0 0;text-align:center}
 footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
+
+/* survey */
+.progress{display:flex;gap:6px;margin-top:14px}
+.progress span{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.progress span.on{background:var(--accent)}
+.stephead{font-family:var(--f-num);font-size:12px;color:var(--accent);letter-spacing:.08em;margin-top:6px}
+.qform{display:grid;gap:14px;margin-top:16px}
+.q{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;margin:0;min-width:0;display:grid;gap:10px}
+.q.bad{border-color:var(--danger)}
+.qt{font-weight:700;font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.req,.opt{font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+.req{background:var(--mark-soft);color:var(--mark-ink)}
+.opt{background:var(--soft);color:var(--muted)}
+.qh{font-size:12px;color:var(--muted);margin:-4px 0 0;white-space:pre-line;overflow-wrap:anywhere}
+.qh.box{margin:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:220px;overflow:auto}
+.qe{color:var(--danger);font-size:12px;font-weight:700;margin:0}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices.stack{flex-direction:column}
+.choices label{position:relative;cursor:pointer}
+.choices input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.choices span{display:block;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px;background:var(--bg)}
+.choices input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.choices input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
+.grid-q{display:grid;gap:12px}
+.grow{display:grid;gap:6px}
+.grow b{font-size:13px}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg span{display:grid;place-items:center;text-align:center;min-height:44px;padding:4px 2px;border:1px solid var(--line);border-radius:8px;font-size:11px;line-height:1.3;background:var(--bg)}
+.seg input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.seg input:focus-visible+span{outline:3px solid var(--mark);outline-offset:2px}
+.qform select,.qform textarea,.qform input[type="text"],.qform input[type="tel"],.qform input[type="email"]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.qform textarea{min-height:110px;resize:vertical}
+.navrow{display:flex;gap:10px}
+.navrow .cta{margin-top:4px}
+.cta.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.cta[disabled]{opacity:.6;cursor:wait}
+.fallback{font-size:12px;color:var(--muted);text-align:center;margin:18px 0 0}
+.thanks{text-align:center;padding:40px 0;display:grid;gap:12px;justify-items:center}
+.thanks .big{font-family:var(--f-display);font-size:30px;color:var(--accent)}
+.errbox{background:var(--surface);border:1.5px solid var(--danger);color:var(--danger);border-radius:12px;padding:12px 14px;font-size:13px;font-weight:700}
 @media (max-width:480px){
   .steps li{font-size:12px;padding:8px 10px}
   .slip{grid-template-columns:64px 1fr auto}
@@ -157,6 +199,25 @@ footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center}
     <div class="companies" id="dCompanies"></div>
     <a class="cta" id="dSurvey" target="_blank" rel="noopener">受講後アンケートに回答する</a>
     <p class="note" id="dNote"></p>
+  </main>
+
+  <main id="v-survey" hidden>
+    <button class="back" type="button" id="qBack">← ゼミのページへ</button>
+    <header class="dhead">
+      <div class="eyebrow">受講後アンケート ／ 所要時間 約5分</div>
+      <h1 id="qTitle"></h1>
+      <div class="progress" id="qProgress" aria-hidden="true"></div>
+      <div class="stephead" id="qStep"></div>
+    </header>
+    <div id="qBody">
+      <form class="qform" id="qForm" novalidate></form>
+      <p class="fallback" id="qFallback"></p>
+    </div>
+    <div class="thanks" id="qThanks" hidden>
+      <div class="big">ありがとうございました</div>
+      <p style="margin:0;color:var(--muted)">回答を受け付けました。案内を希望した企業から、今後ご連絡が届きます。</p>
+      <button class="cta ghost" type="button" id="qHome" style="max-width:320px">ゼミ一覧へ戻る</button>
+    </div>
   </main>
 </div>
 
@@ -316,22 +377,195 @@ function renderSem(s){
     box.append(el("div",{className:"empty",textContent:"参加企業は調整中です"+(s.plan?`（${s.plan}予定）`:"")+"。決まりしだい、このページに掲載します。"}));
   }
   const url = s.survey || CONFIG.formUrl, a=$("#dSurvey");
-  if(url){ a.href=url; a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; }
+  if(SCHEMA && surveyPlan(s)){ a.href="#q-"+s.id; a.removeAttribute("target"); a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; }
+  else if(url){ a.href=url; a.target="_blank"; a.classList.remove("off"); a.removeAttribute("aria-disabled"); a.textContent="受講後アンケートに回答する"; }
   else { a.removeAttribute("href"); a.classList.add("off"); a.setAttribute("aria-disabled","true"); a.textContent="アンケートは準備中です"; }
   $("#dNote").textContent = !url ? "講座当日までに回答フォームを用意します。"
     : (s.date && s.date > todayStr) ? "アンケートは講座を受けたあとに回答してください。" : "講座を受けたら、その日のうちに回答をお願いします。";
 }
 function renderAll(){ renderChips(); renderList(); renderCompanies(); route(false); }
 
-// ---- 画面の切り替え（#s-ゼミID） ----
+// ---- アンケート（見た目はLP、回答の送り先はGoogleフォーム） ----
+let SCHEMA=null, SCHEMA_STATE="loading", QS=null;
+const TEL_RE=/^0\d{1,4}-\d{1,4}-\d{3,4}$/, MAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function schemaUrl(){ return CONFIG.sheetCsvUrl ? CONFIG.sheetCsvUrl.replace(/([?&]sheet=)[^&]*/, "$1"+encodeURIComponent("フォーム設定")) : ""; }
+function formAction(){ return CONFIG.formUrl ? CONFIG.formUrl.replace(/\/viewform.*$/,"/formResponse") : ""; }
+function parseSchema(rows){
+  const head=rows[0].map(h=>h.trim()), g=(r,n)=>String(r[head.indexOf(n)]??"").trim();
+  const j=v=>{ try{ const x=JSON.parse(v||"[]"); return Array.isArray(x)?x:[]; }catch(e){ return []; } };
+  const items=rows.slice(1).map((r,i)=>({k:"q"+i, type:g(r,"種類"), title:g(r,"タイトル"), help:g(r,"説明"), required:!!g(r,"必須"),
+    entries:g(r,"entry").split(",").map(x=>x.trim()).filter(Boolean), choices:j(g(r,"選択肢")), rows:j(g(r,"行")), sem:g(r,"ゼミID"), sec:Number(g(r,"セクション"))||0}));
+  const semQ=items.find(i=>i.sec===0 && i.type==="LIST");
+  const finalPage=items.filter(i=>i.type==="PAGE" && !i.sem).pop();
+  if(!semQ || !semQ.entries.length || !finalPage) throw new Error("schema");
+  return {items, semQ, finalSec:finalPage.sec};
+}
+// そのゼミのアンケートの組み立て（ページ分けと送り先の番号）
+function surveyPlan(s){
+  if(!SCHEMA || !formAction()) return null;
+  const sc=SCHEMA, page=sc.items.find(i=>i.type==="PAGE" && i.sem===s.id);
+  const choice=sc.semQ.choices.find(c=>c===fullName(s)) || sc.semQ.choices.find(c=>c.endsWith(" "+s.name));
+  if(!page || !choice) return null;
+  const body=i=>i.type!=="PAGE" && i.entries.length;
+  const cos=sc.items.filter(i=>i.sec===page.sec && body(i)).map(i=>({...i, choices:i.choices.filter(c=>!/^（.*）$/.test(c))}));
+  const steps=[{title:"講座について", items:sc.items.filter(i=>i.sec===0 && i!==sc.semQ && body(i))}];
+  if(cos.some(i=>i.choices.length)) steps.push({title:"案内を受けたい企業", items:cos});
+  steps.push({title:"連絡先と同意", items:sc.items.filter(i=>i.sec===sc.finalSec && body(i))});
+  return {choice, semSec:page.sec, steps};
+}
+const isEarly=it=>it.type==="MULTIPLE_CHOICE" && /早期選考/.test(it.title) && !it.required;
+const findItem=re=>QS && QS.steps.flatMap(s=>s.items).find(it=>re.test(it.title));
+function visible(it){
+  if(!isEarly(it)) return true;
+  const gr=findItem(/学年/), co=findItem(/志望進路/);
+  if(!gr || !co) return true;
+  return qValue(gr)==="3年生" && /民間/.test(qValue(co));
+}
+function normTel(v){ return v.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[ー－−‐―]/g,"-").replace(/\s/g,""); }
+function qField(it){
+  const k=it.k, box=el("div",{className:"q",id:"f-"+k,role:"group"});
+  const tid="t-"+k; box.setAttribute("aria-labelledby",tid);
+  box.append(el("div",{className:"qt",id:tid},[it.title, el("span",{className:it.required?"req":"opt",textContent:it.required?"必須":"任意"})]));
+  if(it.help) box.append(el("p",{className:"qh"+(it.help.length>140?" box":""),textContent:it.help}));
+  const opt=(type,name,v,i)=>{ const id=`${name}-${i}`; return el("label",{htmlFor:id},[el("input",{type,name,value:v,id}), el("span",{textContent:v})]); };
+  if(it.type==="TEXT"){
+    const tel=/電話/.test(it.title), mail=/メール/.test(it.title);
+    const inp=el("input",{type:tel?"tel":mail?"email":"text",id:k,name:k,maxLength:200});
+    if(tel){ inp.inputMode="tel"; inp.placeholder="例）090-1234-5678"; inp.autocomplete="tel"; inp.addEventListener("blur",()=>{ inp.value=normTel(inp.value); }); }
+    else if(mail){ inp.inputMode="email"; inp.placeholder="例）hokkai@example.com"; inp.autocomplete="email"; }
+    else if(/ふりがな/.test(it.title)) inp.placeholder="例）ほっかい たろう";
+    else if(/お名前/.test(it.title)){ inp.placeholder="例）北海 太郎"; inp.autocomplete="name"; }
+    else if(/学科/.test(it.title)) inp.placeholder="例）法律学科";
+    box.append(inp);
+  }else if(it.type==="PARAGRAPH_TEXT"){
+    box.append(el("textarea",{id:k,name:k,maxLength:3000}));
+  }else if(it.type==="MULTIPLE_CHOICE" || it.type==="CHECKBOX"){
+    const long=it.choices.some(c=>c.length>10);
+    const list=it.choices.map((c,i)=>opt(it.type==="CHECKBOX"?"checkbox":"radio",k,c,i));
+    // 企業の選択には「全社希望する」を先頭に置く（押すと全社にチェック。送るのは各社の名前）
+    if(it.type==="CHECKBOX" && it.sem && it.choices.length>1){
+      const aid=`${k}-all`;
+      list.unshift(el("label",{htmlFor:aid},[el("input",{type:"checkbox",id:aid,className:"allco",value:""}), el("span",{textContent:"全社希望する"})]));
+    }
+    box.append(el("div",{className:"choices"+(long||it.sem?" stack":"")}, list));
+  }else if(it.type==="LIST"){
+    box.append(el("select",{id:k,name:k},[el("option",{value:"",textContent:"選んでください"}), ...it.choices.map(c=>el("option",{value:c,textContent:c}))]));
+  }else if(it.type==="GRID"){
+    box.append(el("div",{className:"grid-q"}, it.rows.map((r,ri)=>el("div",{className:"grow"},[el("b",{textContent:r}), el("div",{className:"seg"}, it.choices.map((c,ci)=>opt("radio",`${k}_${ri}`,c,ci)))]))));
+  }
+  box.append(el("p",{className:"qe",hidden:true}));
+  return box;
+}
+function qValue(it){
+  const f=$("#qForm"), k=it.k;
+  if(it.type==="TEXT"||it.type==="PARAGRAPH_TEXT"||it.type==="LIST"){ const n=f.querySelector("#"+k); return n ? n.value.trim() : ""; }
+  if(it.type==="MULTIPLE_CHOICE"){ const n=f.querySelector(`input[name="${k}"]:checked`); return n ? n.value : ""; }
+  if(it.type==="CHECKBOX") return [...f.querySelectorAll(`input[name="${k}"]:checked`)].map(n=>n.value);
+  if(it.type==="GRID") return it.rows.map((_,ri)=>{ const n=f.querySelector(`input[name="${k}_${ri}"]:checked`); return n ? n.value : ""; });
+  return "";
+}
+function checkItem(it){
+  const box=$("#f-"+it.k), err=box.querySelector(".qe"); let msg="";
+  if(visible(it)){
+    let v=qValue(it);
+    if(it.type==="TEXT" && /電話/.test(it.title)){ const n=box.querySelector("input"); n.value=normTel(n.value); v=n.value; }
+    const empty = Array.isArray(v) ? (it.type==="GRID" ? v.some(x=>!x) : !v.length) : !v;
+    if(it.required && empty) msg = it.type==="GRID" ? "すべての行を選んでください。" : "回答してください。";
+    else if(it.type==="TEXT" && v && /電話/.test(it.title) && !TEL_RE.test(v)) msg="000-0000-0000 のようにハイフンをつけて入力してください。";
+    else if(it.type==="TEXT" && v && /メール/.test(it.title) && !MAIL_RE.test(v)) msg="メールアドレスの形で入力してください。";
+  }
+  err.textContent=msg; err.hidden=!msg; box.classList.toggle("bad",!!msg);
+  return !msg;
+}
+function applyVisibility(){ if(QS) QS.steps.forEach(st=>st.items.forEach(it=>{ $("#f-"+it.k).hidden=!visible(it); })); }
+function openSurvey(s){
+  const plan=surveyPlan(s);
+  $("#qTitle").textContent=fullName(s)+" 就活講座";
+  const fb=$("#qFallback"), url=s.survey||CONFIG.formUrl;
+  fb.replaceChildren(...(url?["うまく送信できない場合は、", el("a",{href:url,target:"_blank",rel:"noopener",textContent:"Googleフォーム"}), "から回答してください。"]:[]));
+  $("#qBody").hidden=false; $("#qThanks").hidden=true;
+  const f=$("#qForm"); f.replaceChildren();
+  if(!plan){
+    QS=null; $("#qProgress").replaceChildren(); $("#qStep").textContent="";
+    f.append(el("div",{className:"empty",textContent: SCHEMA_STATE==="loading" ? "アンケートを読み込んでいます…" : "このページではアンケートを表示できませんでした。下のリンクのGoogleフォームから回答してください。"}));
+    return;
+  }
+  QS={s, ...plan, step:0, sending:false};
+  QS.steps.forEach((st,si)=>{ f.append(el("div",{className:"qform",id:"st-"+si,hidden:si!==0},st.items.map(qField))); });
+  f.append(el("div",{className:"errbox",id:"qErr",hidden:true}));
+  f.append(el("div",{className:"navrow"},[
+    el("button",{type:"button",className:"cta ghost",id:"qPrev",textContent:"戻る"}),
+    el("button",{type:"submit",className:"cta",id:"qNext",textContent:"次へ"})
+  ]));
+  $("#qPrev").onclick=()=>showStep(QS.step-1);
+  f.onchange=e=>{
+    const grp=e.target.closest(".choices"), all=grp && grp.querySelector("input.allco");
+    if(all){
+      const items=[...grp.querySelectorAll("input:not(.allco)")];
+      if(e.target===all) items.forEach(n=>{ n.checked=all.checked; });
+      else all.checked=items.every(n=>n.checked);
+    }
+    applyVisibility();
+    const box=e.target.closest(".q");
+    if(box && box.classList.contains("bad")){ const it=QS.steps.flatMap(s=>s.items).find(i=>"f-"+i.k===box.id); if(it) checkItem(it); }
+  };
+  applyVisibility(); showStep(0, true);
+}
+function showStep(i, quiet){
+  QS.step=i;
+  QS.steps.forEach((_,si)=>{ $("#st-"+si).hidden=si!==i; });
+  $("#qProgress").replaceChildren(...QS.steps.map((_,si)=>el("span",{className:si<=i?"on":""})));
+  $("#qStep").textContent=`STEP ${i+1} / ${QS.steps.length} ・ ${QS.steps[i].title}`;
+  $("#qPrev").hidden=i===0;
+  $("#qNext").textContent = i===QS.steps.length-1 ? "回答を送信する" : "次へ";
+  $("#qErr").hidden=true;
+  if(!quiet) window.scrollTo(0,0);
+}
+$("#qForm").addEventListener("submit", async e=>{
+  e.preventDefault();
+  if(!QS || QS.sending) return;
+  const st=QS.steps[QS.step];
+  const bad=st.items.filter(it=>!checkItem(it));
+  if(bad.length){ $("#f-"+bad[0].k).scrollIntoView({behavior:"smooth",block:"center"}); return; }
+  if(QS.step < QS.steps.length-1){ showStep(QS.step+1); return; }
+
+  const p=new URLSearchParams();
+  p.append("entry."+SCHEMA.semQ.entries[0], QS.choice);
+  QS.steps.forEach(st=>st.items.forEach(it=>{
+    if(!visible(it)) return;
+    const v=qValue(it);
+    if(it.type==="GRID") v.forEach((x,ri)=>{ if(x && it.entries[ri]) p.append("entry."+it.entries[ri], x); });
+    else if(Array.isArray(v)) v.forEach(x=>p.append("entry."+it.entries[0], x));
+    else if(v) p.append("entry."+it.entries[0], v);
+  }));
+  p.append("fvv","1");
+  p.append("pageHistory",[0,QS.semSec,SCHEMA.finalSec].join(","));
+  const btn=$("#qNext"); QS.sending=true; btn.disabled=true; btn.textContent="送信しています…";
+  try{
+    await fetch(formAction(),{method:"POST",mode:"no-cors",body:p});
+    $("#qForm").reset(); QS=null;
+    $("#qBody").hidden=true; $("#qThanks").hidden=false; $("#qProgress").replaceChildren(); $("#qStep").textContent=""; window.scrollTo(0,0);
+  }catch(x){
+    const er=$("#qErr"); er.textContent="送信できませんでした。電波の良いところで、もう一度「回答を送信する」を押してください。続けて失敗する場合は、下のGoogleフォームから回答してください。"; er.hidden=false;
+    QS.sending=false; btn.disabled=false; btn.textContent="回答を送信する";
+  }
+});
+
+// ---- 画面の切り替え（#s-ゼミID ／ #q-ゼミID） ----
 function go(h){ if(location.hash.slice(1)===h) route(); else location.hash=h; }
+function goHome(){ history.pushState(null,"",location.pathname+location.search); route(); }
 function route(e){
-  const m=location.hash.slice(1).match(/^s-([A-Za-z0-9_-]+)$/), s=m&&byId(m[1]);
-  $("#v-home").hidden=!!s; $("#v-sem").hidden=!s;
-  if(s) renderSem(s);
+  const m=location.hash.slice(1).match(/^([sq])-([A-Za-z0-9_-]+)$/), s=m&&byId(m[2]);
+  const view = s ? m[1] : "";
+  $("#v-home").hidden=view!==""; $("#v-sem").hidden=view!=="s"; $("#v-survey").hidden=view!=="q";
+  if(view==="s") renderSem(s);
+  if(view==="q" && (!QS || QS.s.id!==s.id) && $("#qThanks").hidden) openSurvey(s);
+  if(view!=="q"){ QS=null; $("#qThanks").hidden=true; }
   if(e!==false) window.scrollTo(0,0);
 }
-$("#dBack").onclick=()=>{ history.pushState(null,"",location.pathname+location.search); route(); };
+$("#dBack").onclick=goHome;
+$("#qHome").onclick=goHome;
+$("#qBack").onclick=()=>{ const id=(location.hash.match(/^#q-(.+)$/)||[])[1]; if(id) go("s-"+id); else goHome(); };
 window.addEventListener("hashchange",route);
 window.addEventListener("popstate",route);
 
@@ -341,7 +575,10 @@ function notice(t){ const n=$("#notice"); n.textContent=t||""; n.hidden=!t; }
   let cached=null; try{ cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"null"); }catch(e){}
   SEMS = sortSems(cached && Array.isArray(cached.sems) ? cached.sems : FALLBACK);
   renderAll();
-  if(!CONFIG.sheetCsvUrl) return;
+  if(!CONFIG.sheetCsvUrl){ SCHEMA_STATE="failed"; return; }
+  fetch(schemaUrl()+"&_="+Date.now(),{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
+    SCHEMA=parseSchema(parseCsv(t)); SCHEMA_STATE="ready";
+  }).catch(()=>{ SCHEMA=null; SCHEMA_STATE="failed"; }).finally(()=>{ QS=null; route(false); });
   const url=CONFIG.sheetCsvUrl+(CONFIG.sheetCsvUrl.includes("?")?"&":"?")+"_="+Date.now();
   fetch(url,{cache:"no-store"}).then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); }).then(t=>{
     const rows=parseCsv(t); if(rows.length<1) throw new Error("empty");
