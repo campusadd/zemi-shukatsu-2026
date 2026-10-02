@@ -482,7 +482,14 @@ function visible(it){
   if(!gr || !co) return true;
   return qValue(gr)==="3年生" && /民間/.test(qValue(co));
 }
-function normTel(v){ return v.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[ー－−‐―]/g,"-").replace(/\s/g,""); }
+// 電話番号：数字だけで入力してもらい、送るときにハイフンを自動で付ける（Googleフォーム側の形式に合わせる）
+function normTel(v){
+  const d=String(v).replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/\D/g,"");
+  if(/^0\d{10}$/.test(d)) return d.replace(/^(\d{3})(\d{4})(\d{4})$/,"$1-$2-$3");   // 携帯など11桁
+  if(/^0[36]\d{8}$/.test(d)) return d.replace(/^(\d{2})(\d{4})(\d{4})$/,"$1-$2-$3"); // 東京・大阪の固定電話
+  if(/^0\d{9}$/.test(d)) return d.replace(/^(\d{3})(\d{3})(\d{4})$/,"$1-$2-$3");    // そのほかの固定電話（011など）
+  return String(v).trim();
+}
 function qField(it){
   const k=it.k, box=el("div",{className:"q",id:"f-"+k,role:"group"});
   const tid="t-"+k; box.setAttribute("aria-labelledby",tid);
@@ -492,7 +499,7 @@ function qField(it){
   if(it.type==="TEXT"){
     const tel=/電話/.test(it.title), mail=/メール/.test(it.title);
     const inp=el("input",{type:tel?"tel":mail?"email":"text",id:k,name:k,maxLength:200});
-    if(tel){ inp.inputMode="tel"; inp.placeholder="例）090-1234-5678"; inp.autocomplete="tel"; inp.addEventListener("blur",()=>{ inp.value=normTel(inp.value); }); }
+    if(tel){ inp.inputMode="tel"; inp.placeholder="例）09012345678"; inp.autocomplete="tel"; inp.addEventListener("blur",()=>{ inp.value=normTel(inp.value); }); }
     else if(mail){ inp.inputMode="email"; inp.placeholder="例）hokkai@example.com"; inp.autocomplete="email"; }
     else if(/ふりがな/.test(it.title)) inp.placeholder="例）ほっかい たろう";
     else if(/お名前/.test(it.title)){ inp.placeholder="例）北海 太郎"; inp.autocomplete="name"; }
@@ -539,7 +546,7 @@ function checkItem(it){
     if(it.type==="TEXT" && /電話/.test(it.title)){ const n=box.querySelector("input"); n.value=normTel(n.value); v=n.value; }
     const empty = Array.isArray(v) ? (it.type==="GRID" ? v.some(x=>!x) : !v.length) : !v;
     if(it.required && empty) msg = it.type==="GRID" ? "すべての行を選んでください。" : "回答してください。";
-    else if(it.type==="TEXT" && v && /電話/.test(it.title) && !TEL_RE.test(v)) msg="000-0000-0000 のようにハイフンをつけて入力してください。";
+    else if(it.type==="TEXT" && v && /電話/.test(it.title) && !TEL_RE.test(v)) msg="電話番号を数字で入力してください（例：09012345678）。";
     else if(it.type==="TEXT" && v && /メール/.test(it.title) && !MAIL_RE.test(v)) msg="メールアドレスの形で入力してください。";
   }
   err.textContent=msg; err.hidden=!msg; box.classList.toggle("bad",!!msg);
