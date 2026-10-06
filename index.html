@@ -451,8 +451,9 @@ function renderSem(s){
 // アンケートの受付：開催日の朝9:00（日本時間）から。管理表の「アンケート受付」列が「受付中」なら今すぐ、「停止」なら閉じる
 function surveyOpenAt(s){
   const m=(s.surveyMode||"").trim();
+  if(m==="停止") return Infinity; // 「停止」はいちばん優先
   if(m==="受付中" || (CONFIG.surveyOpenNow||[]).includes(s.id)) return 0;
-  if(m==="停止" || !s.date) return Infinity;
+  if(!s.date) return Infinity;
   const [y,mo,d]=s.date.split("-").map(Number);
   return Date.UTC(y,mo-1,d,0,0,0); // 9:00 JST = 0:00 UTC
 }

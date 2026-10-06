@@ -6,5 +6,5 @@ window.ZEMI_CONFIG = {
   // アンケート（Googleフォーム）のURL。ゼミごとのURLが管理表にあればそちらが優先されます
   formUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfzaZvtdyDQPsxUz8RfIMAWj7AnO0qinzB7ZPG6ZIXpIB6uzw/viewform"
   // 開催日より前でもアンケートを開いておくゼミ（ゼミのID）。開いておく必要がなくなったら消してください
-  ,surveyOpenNow: ["chiba"]
+  ,surveyOpenNow: []
 };
