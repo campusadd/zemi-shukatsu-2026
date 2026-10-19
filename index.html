@@ -71,6 +71,8 @@ button{font:inherit;color:inherit}
 .sec-h h2{font-size:18px}
 .sec-h .count{font-family:var(--f-num);font-size:12px;color:var(--muted)}
 .list{display:grid;gap:10px}
+.pastlabel{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:13px;font-weight:700;color:var(--muted)}
+.pastlabel::after{content:"";flex:1;border-top:1px solid var(--line)}
 .slip{display:grid;grid-template-columns:76px 1fr auto;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;text-align:left;padding:0;width:100%;transition:border-color .15s,transform .15s}
 .slip:hover{border-color:var(--accent)}
 .slip:active{transform:scale(.99)}
@@ -328,11 +330,16 @@ function rowsToSems(rows){
   });
   return out;
 }
+// 並び順：これからのゼミ（日付の近い順）→ 日程未定 → 実施済み（最近の順）
+const isPast = s => !!s.date && s.date < todayStr;
 function sortSems(list){
+  const grp = s => isPast(s) ? 2 : (s.date ? 0 : 1);
   return list.map((s,i)=>[s,i]).sort((a,b)=>{
+    const ga=grp(a[0]), gb=grp(b[0]);
+    if(ga!==gb) return ga-gb;
     const x=a[0].date, y=b[0].date;
-    if(x&&y) return x<y?-1:x>y?1:a[1]-b[1];
-    if(x) return -1; if(y) return 1; return a[1]-b[1];
+    if(x&&y&&x!==y) return ga===2 ? (x<y?1:-1) : (x<y?-1:1);
+    return a[1]-b[1];
   }).map(p=>p[0]);
 }
 
@@ -386,7 +393,9 @@ function renderList(){
   const rows=SEMS.filter(inFilter);
   $("#semCount").textContent = rows.length+"ゼミ";
   if(!rows.length) list.append(el("div",{className:"empty",textContent:"開催予定のゼミはまだありません。"}));
+  let shownPast=false;
   for(const s of rows){
+    if(isPast(s) && !shownPast){ shownPast=true; list.append(el("div",{className:"pastlabel",textContent:"実施済みのゼミ就活講座"})); }
     const p=parts(s), st=status(s);
     const date = p
       ? el("div",{className:"date"},[el("div",{className:"m",textContent:p.m+"月"}),el("div",{className:"d",textContent:p.d}),el("div",{className:"w",textContent:p.w+"曜"})])
